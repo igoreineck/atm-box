@@ -1,1 +1,0 @@
-void new_user(void);
