@@ -1,2 +1,7 @@
 data/
+
+# bin file
 src/app*
+
+# object files
+*.o
