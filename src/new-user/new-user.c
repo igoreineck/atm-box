@@ -29,63 +29,59 @@ Opcao 3 (Implícita) - Geração automática de senha (6 dígitos)
 
 
 
-void main(void)
-{
-	int cpf_status = 0;
+int cpf_status = 0;
 
-	struct users
-	{
-		char name[40];
-		char cpf[12];
-		char password[255];
-		char *encrypted_password;
-	};
+struct users {
+    char name[40];
+    char cpf[12];
+    char password[255];
+    char *encrypted_password;
+};
 
-	struct users user;
-	
-	system("clear");
-	show_header();
+struct users user;
 
-	printf("Digite seu nome: ");
-	fgets(user.name, 40, stdin);
+system("clear");
+show_header();
 
-	__fpurge(stdin);
+printf("Digite seu nome: ");
+fgets(user.name, 40, stdin);
 
-	while(!cpf_status) {
-		printf("Digite seu CPF: ");
-		fgets(user.cpf, 12, stdin);
+__fpurge(stdin);
 
-		__fpurge(stdin);
+while (!cpf_status) {
+    printf("Digite seu CPF: ");
+    fgets(user.cpf, 12, stdin);
 
-		if(cpf_verification(user.cpf)) {
-			cpf_status = 1;	
-			
-			system("clear");
-			
-			show_header();
-			
-			printf("Digite seu nome: %s", user.name);
-			printf("Digite seu CPF: %s\n", user.cpf);
-			printf("Digite sua senha: ");
-			
-			fgets(user.password, 255, stdin);
-			
-			__fpurge(stdin);
-			
-		} else {
-			printf("CPF Invalido, Digite novamente\n");
-		}
-	}
+    __fpurge(stdin);
 
-	// printf("Digite a sua senha com no máximo 6 caracteres: ");
-	// fgets(user.password, 255, stdin);
-
-	// __fpurge(stdin);
-
-	// user.encrypted_password = &user.password;
-	// // password_generate(encrypted_password);
-
-	// // save_user(user);
-
-	// printf("Sua conta foi criada com sucesso!");
+    if (cpf_verification(user.cpf)) {
+        cpf_status = 1; 
+        
+        system("clear");
+        
+        show_header();
+        
+        printf("Digite seu nome: %s", user.name);
+        printf("Digite seu CPF: %s\n", user.cpf);
+        printf("Digite sua senha: ");
+        
+        fgets(user.password, 255, stdin);
+        
+        __fpurge(stdin);
+        
+    } else {
+        printf("CPF Invalido, Digite novamente\n");
+    }
 }
+
+    // printf("Digite a sua senha com no máximo 6 caracteres: ");
+    // fgets(user.password, 255, stdin);
+
+    // __fpurge(stdin);
+
+    // user.encrypted_password = &user.password;
+    // // password_generate(encrypted_password);
+
+    // // save_user(user);
+
+    // printf("Sua conta foi criada com sucesso!");
