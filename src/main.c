@@ -32,8 +32,8 @@ int main(void) {
 
     if (option == 1)
         new_user();
-    else if (option == 2)
+    // else if (option == 2) 
         // option 2
-    else
+    // else
         // option 3
 }

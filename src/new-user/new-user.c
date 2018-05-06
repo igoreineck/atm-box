@@ -40,11 +40,11 @@ void save_user(const char *name) {
     mkdir(pathname, 777); 
 }
 
-int info_user(const char *name) {
+// int info_user(const char *name) {
     // INSERIR AQUI OS MÉTODOS PARA ARMAZENAMENTO DAS INFORMAÇÕES DO USUÁRIO
     // UTILIZAR AS FUNÇÕES DE SALVAMENTO DE ARQUIVOS
     // ENVIAR PARA A PASTA DATA
-}
+// }
 
 int new_user(void) {
     show_header_signup();
@@ -55,7 +55,7 @@ int new_user(void) {
     fgets(name, 30, stdin);
 
     save_user(name);
-    info_user(name);
+    // info_user(name);
 
     return 0;
 }
