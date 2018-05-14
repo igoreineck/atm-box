@@ -72,6 +72,7 @@ int cpf_verification(char* cpf) {
 }
 
 void show_header_signup(void) {
+    system("clear");
 
     printf(" .o88b.  .d8b.  d8888b.  .d8b.  .d8888. d888888b d8888b.  .d88b.  \n");
     printf("d8P  Y8 d8' `8b 88  `8D d8' `8b 88'  YP `~~88~~' 88  `8D .8P  Y8. \n");
@@ -89,28 +90,51 @@ void save_user(const char *name) {
     mkdir(pathname, 777); 
 }
 
-int info_user(const char *name) {
-   	 FILE * fPointer;
+// int info_user(const char *name) {
+    // INSERIR AQUI OS MÉTODOS PARA ARMAZENAMENTO DAS INFORMAÇÕES DO USUÁRIO
+    // UTILIZAR AS FUNÇÕES DE SALVAMENTO DE ARQUIVOS
+    // ENVIAR PARA A PASTA DATA
+// }
 
-	char pathname[20] = "../data/batata/user-info.txt";
+//char* info_user(void) {
+//    char name[30];
+//    char *namePtr;
 
-	// strcat(pathname, user.name);
+//    printf("Digite seu nome: ");
+//   fgets(name, 30, stdin);
+
+    // pause();
+
+ //   namePtr = (char *)malloc(sizeof(name));
+
+ //   namePtr = name;
+
+ //   return namePtr;
+//}
+
+//int new_user(void) {
+//    show_header_signup();
+
+//    char *userPtr;
+
+//    userPtr = info_user();
+//    save_user(userPtr);
+
+//    return 0;
+//}
+
+// char password_generate(char *) {}
+
+	
 
 
-	fPointer = fopen(pathname, "w");
-
-	fprintf(fPointer, user.name);
-	fprintf(fPointer, user.cpf);
-	fprintf(fPointer, user.password);
-
-	fclose(fPointer);
-}
+//}
 
 int new_user(void) {
 
 	// char password_generate(char *) {}
 
-	int cpf_status = 0, passwordSize = 0 , passsword_verification_status = 0;
+	int cpf_status = 0, passwordSize = 0 , passsword_verification_status = 0, fPointer;
 	char password_verification[255];
 
 	struct users {
@@ -241,7 +265,17 @@ int new_user(void) {
 		{
 	 		printf("CPF Invalido, Digite novamente\n");
 	 	}
-	}		
+	}
+	char pathname[20] = "../data/batata/user-info.txt";
+
+	// strcat(pathname, user.name);
+	fPointer = fopen(pathname, "w");
+
+	fprintf(fPointer, user.name);
+	fprintf(fPointer, user.cpf);
+	fprintf(fPointer, user.password);
+
+	fclose(fPointer);		
 }
 
 
