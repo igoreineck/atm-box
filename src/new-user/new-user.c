@@ -15,8 +15,8 @@ Opcao 3 (Implícita) - Geração automática de senha (6 dígitos)
 */
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
 #include "new-user.h"
 
@@ -89,21 +89,33 @@ void save_user(const char *name) {
     mkdir(pathname, 777); 
 }
 
-// int info_user(const char *name) {
-    // INSERIR AQUI OS MÉTODOS PARA ARMAZENAMENTO DAS INFORMAÇÕES DO USUÁRIO
-    // UTILIZAR AS FUNÇÕES DE SALVAMENTO DE ARQUIVOS
-    // ENVIAR PARA A PASTA DATA
-// }
+int info_user(const char *name) {
+   	 FILE * fPointer;
+
+	char pathname[20] = "../data/batata/user-info.txt";
+
+	// strcat(pathname, user.name);
+
+
+	fPointer = fopen(pathname, "w");
+
+	fprintf(fPointer, user.name);
+	fprintf(fPointer, user.cpf);
+	fprintf(fPointer, user.password);
+
+	fclose(fPointer);
+}
 
 int new_user(void) {
 
 	// char password_generate(char *) {}
 
-	int cpf_status = 0, passwordSize = 0;
+	int cpf_status = 0, passwordSize = 0 , passsword_verification_status = 0;
+	char password_verification[255];
 
 	struct users {
 		char name[30];
-		char cpf[12];
+		char cpf[13];
 		char password[255];
 		//char *encrypted_password;
 	};
@@ -120,13 +132,15 @@ int new_user(void) {
 
 	__fpurge(stdin);
 
-	while (!cpf_status) {
+	while (!cpf_status)
+	{
 		printf("Digite seu CPF: ");
-		fgets(user.cpf, 12, stdin);
+		fgets(user.cpf, 13, stdin);
 
 		__fpurge(stdin);
 
-	 	if (cpf_verification(user.cpf)) {
+	 	if (cpf_verification(user.cpf))
+		{
 	 		cpf_status = 1; 	
 
 	 		system("clear");		
@@ -134,17 +148,51 @@ int new_user(void) {
 	 		show_header_signup();		
 
 	 		printf("Digite seu nome: %s", user.name);
-	 		printf("Digite seu CPF: %s\n", user.cpf);
+	 		printf("Digite seu CPF: %s", user.cpf);
 			printf("Digite a sua senha com 6 caracteres: ");
 			fgets(user.password, 255, stdin);
+			printf("%s", user.password);
+		
 			__fpurge(stdin);
 
-			if(strlen(user.password) >= 7){
-				passwordSize = 1;
+			if(strlen(user.password) == 7)
+			{
+				while(!passwordSize)
+				{
+					system("clear");		
+
+					show_header_signup();		
+
+					printf("Digite seu nome: %s", user.name);
+					printf("Digite seu CPF: %s", user.cpf);
+					printf("Confirme sua senha: ");
+					fgets(password_verification, 255, stdin);
+					__fpurge(stdin);
+					
+					if(strlen(password_verification) == 7)
+					{
+						if(strcmp(user.password, password_verification) == 0)
+						{
+							passwordSize = 1;
+
+							
+							printf("acabo");
+
+						}
+						else
+						{
+							break;
+						}
+					}
+					else
+					{
+						break;
+					}
+				}
 			}
 
-			while(!passwordSize) {
-
+			while(!passwordSize)
+			{
 				system("clear");		
 
 				show_header_signup();		
@@ -155,27 +203,45 @@ int new_user(void) {
 				fgets(user.password, 255, stdin);
 				__fpurge(stdin);
 
-				if(strlen(user.password) >= 7){
-					system("clear");		
+				if(strlen(user.password) == 7)
+				{
+					while(!passwordSize)
+					{
+						system("clear");		
 
-				show_header_signup();		
+						show_header_signup();		
 
-					printf("Digite seu nome: %s", user.name);
-					printf("Digite seu CPF: %s\n", user.cpf);
-					printf("Confirme sua senha: ");
-					fgets(user.password, 255, stdin);
-				__fpurge(stdin);
-					passwordSize = 1;
+						printf("Digite seu nome: %s", user.name);
+						printf("Digite seu CPF: %s\n", user.cpf);
+						printf("Confirme sua senha: ");
+						fgets(password_verification, 255, stdin);
+						__fpurge(stdin);
+						
+						if(strlen(password_verification) == 7)
+						{
+							if(strcmp(user.password, password_verification) == 0)
+							{
+								passwordSize = 1;
+							}
+							else
+							{
+								break;
+							}
+						}
+						else
+						{
+							break;
+						}
+					}
 				}
 			}
 
-	 	} else {
+	 	}
+		else
+		{
 	 		printf("CPF Invalido, Digite novamente\n");
 	 	}
-	}	
-
-	
-
+	}		
 }
 
 
