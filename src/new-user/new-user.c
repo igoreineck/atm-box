@@ -21,8 +21,7 @@ Opcao 3 (Implícita) - Geração automática de senha (6 dígitos)
 #include "new-user.h"
 
 void show_header_signup(void) {
-    system("cls");
-    system("PAUSE");
+    system("clear");
 
     printf(" .o88b.  .d8b.  d8888b.  .d8b.  .d8888. d888888b d8888b.  .d88b.  \n");
     printf("d8P  Y8 d8' `8b 88  `8D d8' `8b 88'  YP `~~88~~' 88  `8D .8P  Y8. \n");
@@ -46,16 +45,29 @@ void save_user(const char *name) {
     // ENVIAR PARA A PASTA DATA
 // }
 
-int new_user(void) {
-    show_header_signup();
-
+char* info_user(void) {
     char name[30];
+    char *namePtr;
 
     printf("Digite seu nome: ");
     fgets(name, 30, stdin);
 
-    save_user(name);
-    // info_user(name);
+    // pause();
+
+    namePtr = (char *)malloc(sizeof(name));
+
+    namePtr = name;
+
+    return namePtr;
+}
+
+int new_user(void) {
+    show_header_signup();
+
+    char *userPtr;
+
+    userPtr = info_user();
+    save_user(userPtr);
 
     return 0;
 }
