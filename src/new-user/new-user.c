@@ -82,12 +82,43 @@ void show_header_signup(void) {
     printf(" `Y88P' YP   YP Y8888D' YP   YP `8888Y'    YP    88   YD  `Y88P'  \n\n");
 }
 
-void save_user(const char *name) {
-    char pathname[20] = "../data/";
+void save_user(const char *name)
+{
+	// int i;
 
-    strcat(pathname, name);
+	// // strcat(pathname, user.name);
+	// FILE * fPointer;
+	// fPointer = fopen("../data/total.txt", "r");
+	// char cQuantidade[2], quantidade[2];
 
-    mkdir(pathname, 777); 
+	// while(!feof(fPointer))
+	// {
+	// 	fgets(cQuantidade, 2, fPointer);
+	// 	puts(cQuantidade);
+	// }
+
+	
+	// for (i = 0; i < 11; i++) {  
+    //     quantidade[i] = cQuantidade[i] - 48;  
+    // } 
+
+	// int teste = quantidade[0] + 1;
+
+	// fclose(fPointer);
+
+	// FILE * a;
+    // int b = 1;
+	// a = fopen("../data/total.txt", "w");
+
+	// fprintf(a, "a");
+
+	// fclose(a);	
+
+    //char pathname[20] = "../data/";
+
+    //strcat(pathname, );
+
+    //mkdir(pathname, 777); 
 }
 
 // int info_user(const char *name) {
@@ -146,7 +177,6 @@ int new_user(void) {
 
 	struct users user;
 
-	system("clear");
 	show_header_signup();
 
 	printf("Digite seu nome: ");
@@ -167,8 +197,6 @@ int new_user(void) {
 		{
 	 		cpf_status = 1; 	
 
-	 		system("clear");		
-
 	 		show_header_signup();		
 
 	 		printf("Digite seu nome: %s", user.name);
@@ -183,8 +211,6 @@ int new_user(void) {
 			{
 				while(!passwordSize)
 				{
-					system("clear");		
-
 					show_header_signup();		
 
 					printf("Digite seu nome: %s", user.name);
@@ -216,9 +242,7 @@ int new_user(void) {
 			}
 
 			while(!passwordSize)
-			{
-				system("clear");		
-
+			{		
 				show_header_signup();		
 
 				printf("Digite seu nome: %s", user.name);
@@ -231,8 +255,6 @@ int new_user(void) {
 				{
 					while(!passwordSize)
 					{
-						system("clear");		
-
 						show_header_signup();		
 
 						printf("Digite seu nome: %s", user.name);
@@ -266,7 +288,7 @@ int new_user(void) {
 	 		printf("CPF Invalido, Digite novamente\n");
 	 	}
 	}
-	char pathname[20] = "../data/batata/user-info.txt";
+	char pathname[20] = "../data/batata/data.txt";
 
 	// strcat(pathname, user.name);
 	fPointer = fopen(pathname, "w");
