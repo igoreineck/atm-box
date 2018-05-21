@@ -20,58 +20,8 @@ Opcao 3 (Implícita) - Geração automática de senha (6 dígitos)
 #include <sys/stat.h>
 #include "new-user.h"
 
-
-
-//char password_generate(char *);
-int cpf_verification(char* cpf) {
-    int icpf[12];
-    int i, somador = 0, digito1, result1, result2, digito2, valor; 
-    //Efetua a conversao de array de char para um array de int.  
-    for (i = 0; i < 11; i++) {  
-        icpf[i] = cpf[i] - 48;  
-    }  
- 
-    //PRIMEIRO DIGITO.  
- 
-    for (i = 0; i < 9; i++) {  
-        somador += icpf[i] * (10 - i);  
-    }  
- 
-    result1 = somador % 11;  
- 
-    if ((result1 == 0) || (result1 == 1)) {  
-        digito1 = 0;  
-    } else {  
-        digito1 = 11 - result1;  
-    }  
- 
-    //SEGUNDO DIGITO.  
- 
-    somador = 0;  
- 
-    for (i = 0; i < 10; i++) {  
-        somador += icpf[i] * (11 - i);  
-    }  
- 
-    valor = (somador / 11) * 11;  
-    result2 = somador - valor;  
- 
-    if ((result2 == 0) || (result2 == 1)) {  
-        digito2 = 0;  
-    } else {  
-        digito2 = 11 - result2;  
-    }  
- 
-    //RESULTADOS DA VALIDACAO.  
- 
-    if ((digito1 == icpf[9]) && (digito2 == icpf[10])) {  
-        return 1;  
-    } else {  
-        return 0;  
-  } 
-}
-
-void show_header_signup(void) {
+void show_header_signup(void) 
+{
     system("clear");
 
     printf(" .o88b.  .d8b.  d8888b.  .d8b.  .d8888. d888888b d8888b.  .d88b.  \n");
@@ -82,21 +32,85 @@ void show_header_signup(void) {
     printf(" `Y88P' YP   YP Y8888D' YP   YP `8888Y'    YP    88   YD  `Y88P'  \n\n");
 }
 
-int new_user(void) {
+int cpf_verification(char* cpf) 
+{
+    int icpf[12];
 
-	// char password_generate(char *) {}
+    int i, 
+    	somador = 0, 
+    	digito1, 
+    	result1, 
+    	result2, 
+    	digito2, 
+    	valor; 
 
-	int cpf_status = 0, passwordSize = 0 , passsword_verification_status = 0;
+    //Efetua a conversao de array de char para um array de int.  
+    for (i = 0; i < 11; i++) 
+    {  
+        icpf[i] = cpf[i] - 48;  
+    }  
+ 
+    //PRIMEIRO DIGITO.  
+    for (i = 0; i < 9; i++) {  
+        somador += icpf[i] * (10 - i);  
+    }  
+ 
+    result1 = somador % 11;  
+ 
+    if ((result1 == 0) || (result1 == 1)) {  
+        digito1 = 0;  
+    } 
+    else 
+    {  
+        digito1 = 11 - result1;  
+    }  
+ 
+    //SEGUNDO DIGITO.  
+    somador = 0;  
+ 
+    for (i = 0; i < 10; i++) 
+    {  
+        somador += icpf[i] * (11 - i);  
+    }  
+ 
+    valor = (somador / 11) * 11;  
+    result2 = somador - valor;  
+ 
+    if ((result2 == 0) || (result2 == 1)) 
+    {  
+        digito2 = 0;  
+    } 
+    else 
+    {  
+        digito2 = 11 - result2;  
+    }  
+ 
+    //RESULTADOS DA VALIDACAO.  
+    if ((digito1 == icpf[9]) && (digito2 == icpf[10])) 
+    {  
+        return 1;  
+    } 
+    else 
+    {  
+        return 0;  
+  	} 
+}
+
+int new_user(void) 
+{
+	int cpf_status = 0, 
+		passwordSize = 0, 
+		passsword_verification_status = 0;
+
 	char password_verification[255];
 
-	struct users {
+	struct users 
+	{
 		char name[30];
 		char cpf[13];
 		char password[255];
 		//char *encrypted_password;
-	};
-
-	struct users user;
+	} user;
 
 	show_header_signup();
 
@@ -121,26 +135,30 @@ int new_user(void) {
 	 		printf("Digite seu nome: %s", user.name);
 	 		printf("Digite seu CPF: %s", user.cpf);
 			printf("Digite a sua senha com 6 caracteres: ");
+
 			fgets(user.password, 255, stdin);
+
 			printf("%s", user.password);
 		
 			__fpurge(stdin);
 
-			if(strlen(user.password) == 7)
+			if (strlen(user.password) == 7)
 			{
-				while(!passwordSize)
+				while (!passwordSize)
 				{
 					show_header_signup();		
 
 					printf("Digite seu nome: %s", user.name);
 					printf("Digite seu CPF: %s", user.cpf);
 					printf("Confirme sua senha: ");
+
 					fgets(password_verification, 255, stdin);
+
 					__fpurge(stdin);
 					
-					if(strlen(password_verification) == 7)
+					if (strlen(password_verification) == 7)
 					{
-						if(strcmp(user.password, password_verification) == 0)
+						if (strcmp(user.password, password_verification) == 0)
 						{
 							passwordSize = 1;
 
@@ -157,31 +175,36 @@ int new_user(void) {
 				}
 			}
 
-			while(!passwordSize)
+			while (!passwordSize)
 			{		
 				show_header_signup();		
 
 				printf("Digite seu nome: %s", user.name);
 				printf("Digite seu CPF: %s\n", user.cpf);
+
 				printf("Digite a sua senha com 6 caracteres: ");
+
 				fgets(user.password, 255, stdin);
+
 				__fpurge(stdin);
 
-				if(strlen(user.password) == 7)
+				if (strlen(user.password) == 7)
 				{
-					while(!passwordSize)
+					while (!passwordSize)
 					{
 						show_header_signup();		
 
 						printf("Digite seu nome: %s", user.name);
 						printf("Digite seu CPF: %s\n", user.cpf);
 						printf("Confirme sua senha: ");
+
 						fgets(password_verification, 255, stdin);
+
 						__fpurge(stdin);
 						
-						if(strlen(password_verification) == 7)
+						if (strlen(password_verification) == 7)
 						{
-							if(strcmp(user.password, password_verification) == 0)
+							if (strcmp(user.password, password_verification) == 0)
 							{
 								passwordSize = 1;
 							}
@@ -197,47 +220,52 @@ int new_user(void) {
 					}
 				}
 			}
-
 	 	}
 		else
 		{
-	 		printf("CPF Invalido, Digite novamente\n");
+	 		printf("CPF invalido, digite novamente\n");
 	 	}
 	}
 
 	system("clear");
 
-	int i, newTotal;
  	FILE * fPointer;
+	int i, 
+		newTotal;
+	
+	char totalUsersString[2], 
+		 totalUsers[2],
+		 pathname[20] = "../data/user_";
+	
 	fPointer = fopen("../data/total.txt", "r");
-	char totalUsersString[2], totalUsers[2];
 
-	while(!feof(fPointer))
+	while (!feof(fPointer))
 	{
 		fgets(totalUsersString, 2, fPointer);
 		puts(totalUsersString);
 	}
+	fclose(fPointer);
 
-	for (i = 0; i < 11; i++) {  
+	for (i = 0; i < 11; i++) 
+	{  
         totalUsers[i] = totalUsersString[i] - 48;  
     } 
 
-
 	newTotal = totalUsers[0] + 1;
 
-	fclose(fPointer);
-	
-	char pathname[20] = "../data/user_";
 	strcat(pathname, totalUsersString);
+
 	mkdir(pathname, 777);
+
 	strcat(pathname, "/data");
+
 	fPointer = fopen(pathname, "w");
 
 	fprintf(fPointer, user.cpf);
 	fprintf(fPointer, user.password);
 	fprintf(fPointer, user.name);
 
-	fclose(fPointer);	
+	fclose(fPointer);
 
 	fPointer = fopen("../data/total.txt", "w");
 

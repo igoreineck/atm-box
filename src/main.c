@@ -18,11 +18,27 @@ Opcao 3 - New user
 #include <stdlib.h>
 #include "new-user/new-user.h"
 
+void show_main_header(void);
+
+void show_main_header(void)
+{
+    system("clear");
+
+    printf("888888  d8.     88  d888888  .d88b.  \n");
+    printf("  88    888.    88  88      .8P  Y8. \n");
+    printf("  88    88.8.   88  88      88    88 \n");
+    printf("  88    88 .8.  88  88888   88    88 \n");
+    printf("  88    88  .8. 88  88      88    88 \n");
+    printf("  88    88   .8.88  88      `8b  d8' \n");
+    printf("888888  88    .88b  88       `Y88P'  \n\n");
+}
+
 int main(void) {
     
     int option = 0;
 
-    printf("Digite uma das opções abaixo: \n");
+    show_main_header();
+    printf("\nDigite uma das opções abaixo: \n");
     printf("Digite 1 - Para criar uma conta. \n");
     printf("Digite 2 - Para acessar as informações da sua conta. \n");
     printf("Digite 3 - Para acessar as opções de Administrador. \n");

@@ -26,6 +26,19 @@ Opcao 5 - Redefinir senha
 #include <string.h>
 #include "info.h"
 
+void show_header(void) 
+{
+    system("clear");
+
+    printf("888888  d8.     88  d888888  .d88b.  \n");
+    printf("  88    888.    88  88      .8P  Y8. \n");
+    printf("  88    88.8.   88  88      88    88 \n");
+    printf("  88    88 .8.  88  88888   88    88 \n");
+    printf("  88    88  .8. 88  88      88    88 \n");
+    printf("  88    88   .8.88  88      `8b  d8' \n");
+    printf("888888  88    .88b  88       `Y88P'  \n\n");
+}
+
 void saldo_usuario(void)
 {
     FILE *file;
@@ -44,7 +57,8 @@ void saldo_usuario(void)
 
     fclose(file);
 
-    printf("Saldo: %0.2f \n", valor_saldo);
+    show_header();
+    printf("Saldo: %0.4f \n", valor_saldo);
 }
 
 void deposito_usuario(void)
@@ -52,7 +66,8 @@ void deposito_usuario(void)
     FILE *file;
     float valor_para_deposito;
 
-    printf("Digite um valor para deposito: ");
+    show_header();
+    printf("\nDigite um valor para deposito: ");
     scanf("%f", &valor_para_deposito);
 
     if ((file = fopen("../data/usuario/caixa.bin", "wb")) == NULL)
@@ -65,6 +80,11 @@ void deposito_usuario(void)
     {
         printf("Erro na escrita do arquivo.\n");
     }
+    else 
+    {
+        show_header();
+        printf("\nDepósito efetuado com sucesso!\n");
+    }
 
     fclose(file);
 }
@@ -75,7 +95,8 @@ void saque_usuario(void)
     float valor_para_saque;
     float saldo;
 
-    printf("Digite um valor para saque: ");
+    show_header();
+    printf("\nDigite um valor para saque: ");
     scanf("%f", &valor_para_saque);
 
     if ((file = fopen("../data/usuario/caixa.bin", "rb")) == NULL)
@@ -90,18 +111,21 @@ void saque_usuario(void)
 
     fclose(file);
 
-    printf("Saldo atual: %0.2f \n", saldo);
+    show_header();
+    printf("\nSaldo atual: %0.4f \n", saldo);
 
     if (saldo > 0) {
         saldo -= valor_para_saque;
     }
     else if (saldo == 0)
     {
-        printf("Seu saldo está zerado. Não será possível realizar um saque.\n");
+        show_header();
+        printf("\nSeu saldo está zerado. Não será possível realizar um saque.\n");
     }
     else 
     {
-        printf("Seu saldo está negativo. Não será possível realizar um saque.\n");
+        show_header();
+        printf("\nSeu saldo está negativo. Não será possível realizar um saque.\n");
     }
 
     if ((file = fopen("../data/usuario/caixa.bin", "wb")) == NULL)
@@ -116,14 +140,16 @@ void saque_usuario(void)
 
     fclose(file);
 
-    printf("Novo saldo: %0.2f \n", saldo);
+    show_header();
+    printf("\nNovo saldo: %0.4f \n", saldo);
 }
 
 void acessar_informacoes_monetarias(void) 
 {
     int opcao = 0;
 
-    printf("Digite uma op��o abaixo: \n");
+    show_header();
+    printf("\nDigite uma op��o abaixo: \n");
     printf("1 - Saldo \n");
     printf("2 - Dep�sito \n");
     printf("3 - Saque \n");
@@ -154,7 +180,8 @@ void informacoes_usuario(void)
 {
     int opcao = 0;
 
-    printf("Digite uma das opções abaixo: \n");
+    show_header();
+    printf("\nDigite uma das opções abaixo: \n");
     printf("1 - Informações da Conta \n");
     printf("2 - Informações monetárias da Conta \n");
     // printf("3 - Editar conta") -> Adicionar posteriormente
