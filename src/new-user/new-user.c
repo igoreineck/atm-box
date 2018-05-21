@@ -82,90 +82,11 @@ void show_header_signup(void) {
     printf(" `Y88P' YP   YP Y8888D' YP   YP `8888Y'    YP    88   YD  `Y88P'  \n\n");
 }
 
-void save_user(const char *name)
-{
-	// int i;
-
-	// // strcat(pathname, user.name);
-	// FILE * fPointer;
-	// fPointer = fopen("../data/total.txt", "r");
-	// char cQuantidade[2], quantidade[2];
-
-	// while(!feof(fPointer))
-	// {
-	// 	fgets(cQuantidade, 2, fPointer);
-	// 	puts(cQuantidade);
-	// }
-
-	
-	// for (i = 0; i < 11; i++) {  
-    //     quantidade[i] = cQuantidade[i] - 48;  
-    // } 
-
-	// int teste = quantidade[0] + 1;
-
-	// fclose(fPointer);
-
-	// FILE * a;
-    // int b = 1;
-	// a = fopen("../data/total.txt", "w");
-
-	// fprintf(a, "a");
-
-	// fclose(a);	
-
-    //char pathname[20] = "../data/";
-
-    //strcat(pathname, );
-
-    //mkdir(pathname, 777); 
-}
-
-// int info_user(const char *name) {
-    // INSERIR AQUI OS MÉTODOS PARA ARMAZENAMENTO DAS INFORMAÇÕES DO USUÁRIO
-    // UTILIZAR AS FUNÇÕES DE SALVAMENTO DE ARQUIVOS
-    // ENVIAR PARA A PASTA DATA
-// }
-
-//char* info_user(void) {
-//    char name[30];
-//    char *namePtr;
-
-//    printf("Digite seu nome: ");
-//   fgets(name, 30, stdin);
-
-    // pause();
-
- //   namePtr = (char *)malloc(sizeof(name));
-
- //   namePtr = name;
-
- //   return namePtr;
-//}
-
-//int new_user(void) {
-//    show_header_signup();
-
-//    char *userPtr;
-
-//    userPtr = info_user();
-//    save_user(userPtr);
-
-//    return 0;
-//}
-
-// char password_generate(char *) {}
-
-	
-
-
-//}
-
 int new_user(void) {
 
 	// char password_generate(char *) {}
 
-	int cpf_status = 0, passwordSize = 0 , passsword_verification_status = 0, fPointer;
+	int cpf_status = 0, passwordSize = 0 , passsword_verification_status = 0;
 	char password_verification[255];
 
 	struct users {
@@ -181,8 +102,6 @@ int new_user(void) {
 
 	printf("Digite seu nome: ");
 	fgets(user.name, 30, stdin);
-
-	save_user(user.name);
 
 	__fpurge(stdin);
 
@@ -224,9 +143,6 @@ int new_user(void) {
 						if(strcmp(user.password, password_verification) == 0)
 						{
 							passwordSize = 1;
-
-							
-							printf("acabo");
 
 						}
 						else
@@ -288,23 +204,52 @@ int new_user(void) {
 	 		printf("CPF Invalido, Digite novamente\n");
 	 	}
 	}
-	char pathname[20] = "../data/batata/data.txt";
 
-	// strcat(pathname, user.name);
+	system("clear");
+
+	int i, newTotal;
+ 	FILE * fPointer;
+	fPointer = fopen("../data/total.txt", "r");
+	char totalUsersString[2], totalUsers[2];
+
+	while(!feof(fPointer))
+	{
+		fgets(totalUsersString, 2, fPointer);
+		puts(totalUsersString);
+	}
+
+	for (i = 0; i < 11; i++) {  
+        totalUsers[i] = totalUsersString[i] - 48;  
+    } 
+
+
+	newTotal = totalUsers[0] + 1;
+
+	fclose(fPointer);
+	
+	char pathname[20] = "../data/user_";
+	strcat(pathname, totalUsersString);
+	mkdir(pathname, 777);
+	strcat(pathname, "/data");
 	fPointer = fopen(pathname, "w");
 
-	fprintf(fPointer, user.name);
 	fprintf(fPointer, user.cpf);
 	fprintf(fPointer, user.password);
+	fprintf(fPointer, user.name);
 
-	fclose(fPointer);		
+	fclose(fPointer);	
+
+	fPointer = fopen("../data/total.txt", "w");
+
+	snprintf(totalUsersString, 20, "%d", newTotal);
+	
+	fprintf(fPointer, totalUsersString);
+
+	fclose(fPointer);	
+
+	system("clear");
+
+	printf("ACABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\n");
+
 }
 
-
-     //user.encrypted_password = &user.password;
-
-
-     // password_generate(encrypted_password);
-     // save_user(user);
-
-    // printf("Sua conta foi criada com sucesso!");
