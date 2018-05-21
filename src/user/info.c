@@ -21,28 +21,102 @@ Opcao 5 - Redefinir senha
 
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "info.h"
 
-// definir função no .h
-float* saldo_usuario(void)
+void saldo_usuario(void)
 {
-	float saldo;
+    FILE *file;
+    float valor_saldo;
 
-	FILE *file;
+    if ((file = fopen("../data/usuario/caixa.bin", "rb")) == NULL)
+    {
+        printf("Erro ao abrir o arquivo.\n");
+        exit(1);
+    }
 
-	file = fopen("../../data/usuario-1/saldo.txt", "r");
+    if (fread(&valor_saldo, sizeof(float), 1, file) != 1)
+    {
+        printf("Erro na leitura do arquivo.\n");
+    }
 
-	fscanf(file, "%f\n", &saldo);
+    fclose(file);
 
-	printf("%4f", saldo);
+    printf("Saldo: %0.2f \n", valor_saldo);
+}
 
-	fclose(file);
+void deposito_usuario(void)
+{
+    FILE *file;
+    float valor_para_deposito;
 
+    printf("Digite um valor para deposito: ");
+    scanf("%f", &valor_para_deposito);
 
-	// return saldo;
+    if ((file = fopen("../data/usuario/caixa.bin", "wb")) == NULL)
+    {
+        printf("Erro na abertura do arquivo.\n");
+        exit(1);
+    }
+
+    if (fwrite(&valor_para_deposito, sizeof(float), 1, file) != 1)
+    {
+        printf("Erro na escrita do arquivo.\n");
+    }
+
+    fclose(file);
+}
+
+void saque_usuario(void)
+{
+    FILE *file;
+    float valor_para_saque;
+    float saldo;
+
+    printf("Digite um valor para saque: ");
+    scanf("%f", &valor_para_saque);
+
+    if ((file = fopen("../data/usuario/caixa.bin", "rb")) == NULL)
+    {
+        printf("Erro na abertura do arquivo.\n");
+    }
+
+    if (fread(&saldo, sizeof(float), 1, file) != 1)
+    {
+        printf("Erro na escrita do arquivo\n");
+    }
+
+    fclose(file);
+
+    printf("Saldo atual: %0.2f \n", saldo);
+
+    if (saldo > 0) {
+        saldo -= valor_para_saque;
+    }
+    else if (saldo == 0)
+    {
+        printf("Seu saldo está zerado. Não será possível realizar um saque.\n");
+    }
+    else 
+    {
+        printf("Seu saldo está negativo. Não será possível realizar um saque.\n");
+    }
+
+    if ((file = fopen("../data/usuario/caixa.bin", "wb")) == NULL)
+    {
+        printf("Erro na abertura do arquivo.\n");
+    }
+
+    if (fwrite(&saldo, sizeof(float), 1, file) != 1)
+    {
+        printf("Erro na escrita do arquivo.\n");
+    }
+
+    fclose(file);
+
+    printf("Novo saldo: %0.2f \n", saldo);
 }
 
 void acessar_informacoes_monetarias(void) 
@@ -59,7 +133,15 @@ void acessar_informacoes_monetarias(void)
 
     if (opcao == 1) 
     {
-    	saldo_usuario();
+        saldo_usuario();
+    }
+    else if (opcao == 2)
+    {
+        deposito_usuario();
+    }
+    else
+    {
+        saque_usuario();
     }
 }
 
@@ -70,23 +152,23 @@ void acessar_informacoes_conta(void)
 
 void informacoes_usuario(void) 
 {
-	int opcao = 0;
+    int opcao = 0;
 
-	printf("Digite uma das opções abaixo: \n");
-	printf("1 - Informações da Conta \n");
-	printf("2 - Informações monetárias da Conta \n");
-	// printf("3 - Editar conta") -> Adicionar posteriormente
-	scanf("%d", &opcao);
+    printf("Digite uma das opções abaixo: \n");
+    printf("1 - Informações da Conta \n");
+    printf("2 - Informações monetárias da Conta \n");
+    // printf("3 - Editar conta") -> Adicionar posteriormente
+    scanf("%d", &opcao);
 
-	__fpurge(stdin);
+    __fpurge(stdin);
 
-	if (opcao == 1) 
-	{
-		acessar_informacoes_conta();
-	} 
-	else if (opcao == 2)
-	{
-		acessar_informacoes_monetarias();
-	}
+    if (opcao == 1) 
+    {
+        acessar_informacoes_conta();
+    } 
+    else if (opcao == 2)
+    {
+        acessar_informacoes_monetarias();
+    }
 }
 
