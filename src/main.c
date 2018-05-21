@@ -20,7 +20,7 @@ Opcao 3 - New user
 
 int main(void) {
     
-    int option;
+    int option = 0;
 
     printf("Digite uma das opções abaixo: \n");
     printf("Digite 1 - Para criar uma conta. \n");
@@ -31,9 +31,15 @@ int main(void) {
     __fpurge(stdin);
 
     if (option == 1)
+    {
         new_user();
-    // else if (option == 2) 
-        // option 2
+    }
+    else if (option == 2) 
+    {
+        informacoes_usuario();
+    }
     // else
-        // option 3
+    // {
+    //     option 3
+    // }
 }
