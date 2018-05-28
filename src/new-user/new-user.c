@@ -32,7 +32,7 @@ void show_header_signup(void)
     printf(" `Y88P' YP   YP Y8888D' YP   YP `8888Y'    YP    88   YD  `Y88P'  \n\n");
 }
 
-int cpf_verification(char* cpf) 
+int cpf_verification(char * cpf) 
 {
     int icpf[12];
 
@@ -100,9 +100,13 @@ int new_user(void)
 {
 	int cpf_status = 0, 
 		passwordSize = 0, 
-		passsword_verification_status = 0;
+		passsword_verification_status = 0,
+		i, 
+		newTotal;
 
-	char password_verification[255];
+	char password_verification[255],
+		 totalUsersString[2], 
+		 totalUsers[2];
 
 	struct users 
 	{
@@ -111,6 +115,10 @@ int new_user(void)
 		char password[255];
 		//char *encrypted_password;
 	} user;
+
+	
+	
+	 
 
 	show_header_signup();
 
@@ -230,12 +238,6 @@ int new_user(void)
 	system("clear");
 
  	FILE * fPointer;
-	int i, 
-		newTotal;
-	
-	char totalUsersString[2], 
-		 totalUsers[2],
-		 pathname[20] = "../data/user_";
 	
 	fPointer = fopen("../data/total.txt", "r");
 
@@ -251,7 +253,9 @@ int new_user(void)
         totalUsers[i] = totalUsersString[i] - 48;  
     } 
 
+
 	newTotal = totalUsers[0] + 1;
+	char pathname[20] = "../data/user_";
 
 	strcat(pathname, totalUsersString);
 
