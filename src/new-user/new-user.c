@@ -235,19 +235,19 @@ int new_user(void)
 
  	FILE * fPointer;
 	
-	// fPointer = fopen("../data/total.txt", "r");
+	fPointer = fopen("../data/total.txt", "r");
 
-	// while (!feof(fPointer))
-	// {
-	// 	fgets(totalUsersString, 2, fPointer);
-	// 	puts(totalUsersString);
-	// }
-	// fclose(fPointer);
+	while (!feof(fPointer))
+	{
+		fgets(totalUsersString, 2, fPointer);
+		puts(totalUsersString);
+	}
+	fclose(fPointer);
 
-	// for (i = 0; i < 11; i++) 
-	// {  
- //        totalUsers[i] = totalUsersString[i] - 48;  
- //    } 
+	for (i = 0; i < 11; i++) 
+	{  
+        totalUsers[i] = totalUsersString[i] - 48;  
+    } 
 
 
 	newTotal = totalUsers[0] + 1;
