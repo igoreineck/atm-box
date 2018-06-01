@@ -1,0 +1,9 @@
+void show_header_admin(void);
+void opcoes_admin(void);
+void quantidade_clientes(void);
+void quantidade_clientes_sem_debito(void);
+void quantidade_clientes_com_debito(void);
+void valor_mais_baixo_em_conta(void);
+void valor_mais_alto_em_conta(void);
+void backlog_usuarios(void);
+int varredura_de_pastas(void);

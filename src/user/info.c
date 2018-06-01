@@ -32,7 +32,6 @@ void show_header(void)
 
     printf("888888  d8.     88  d888888  .d88b.  \n");
     printf("  88    888.    88  88      .8P  Y8. \n");
-    printf("  88    88.8.   88  88      88    88 \n");
     printf("  88    88 .8.  88  88888   88    88 \n");
     printf("  88    88  .8. 88  88      88    88 \n");
     printf("  88    88   .8.88  88      `8b  d8' \n");

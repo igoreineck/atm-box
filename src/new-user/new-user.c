@@ -124,11 +124,11 @@ int novoUsuario(void)
 
     int totalUsuariosAtual = 0, novoTotalUsuarios = 0;
 
-    file = fopen("total.bin", "rb");
+    file = fopen("../src/new-user/total.bin", "rb");
 
     if(file == NULL){
         
-        file = fopen("total.bin", "wb+");
+        file = fopen("../src/new-user/total.bin", "wb+");
 
         novoTotalUsuarios = 1;
         
@@ -141,7 +141,7 @@ int novoUsuario(void)
         
         novoTotalUsuarios = totalUsuariosAtual + 1;
 
-        file = fopen("total.bin", "wb+");
+        file = fopen("../src/new-user/total.bin", "wb+");
         
         fwrite(&novoTotalUsuarios, sizeof(int), 1, file);
     }
@@ -190,7 +190,6 @@ int new_user(void)
 		char name[30];
 		char cpf[12];
 		char password[255];
-		//char *encrypted_password;
 	} user;
 
 	show_header_signup();

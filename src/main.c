@@ -54,8 +54,8 @@ int main(void) {
     {
         informacoes_usuario();
     }
-    // else
-    // {
-    //     option 3
-    // }
+    else
+    {
+        opcoes_admin();
+    }
 }
