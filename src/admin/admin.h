@@ -7,3 +7,4 @@ void valor_mais_baixo_em_conta(void);
 void valor_mais_alto_em_conta(void);
 void backlog_usuarios(void);
 int varredura_de_pastas(void);
+char *buscar_informacoes_bancarias(void);

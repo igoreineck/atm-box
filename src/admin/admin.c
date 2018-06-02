@@ -62,6 +62,12 @@ void backlog_usuarios(void)
     fclose(file);
 }
 
+/**
+ * LEMBRAR!! APLICAR FUNÇÃO DE RETORNO PARA A LEITURA DOS NOMES DAS PASTAS SALVAS EM DATA
+ * ARMAZENAR RETORNO EM ARRAY DE DADOS PARA FACILITAR O ACESSO AS PASTAS
+ * UTILIZAR O ARRAY DE DADOS PARA ACESSAR AS INFORMAÇÕES BANCÁRIAS DE CADA USUÁRIO
+ */
+
 void quantidade_clientes(void)
 {
     FILE *file;
@@ -86,7 +92,32 @@ void quantidade_clientes(void)
 
 // void quantidade_clientes_sem_debito(void)
 // {
-    // show_header_admin()
+//     // show_header_admin()
+//     int quantidade_pastas = varredura_de_pastas();
+//     const char *usuarios[quantidade_pastas + 1];
+
+//     struct dirent *de;
+
+//     DIR *dr = opendir("../data");
+
+//     if (dr == NULL)
+//     {
+//         printf("Não é possível abrir o diretório.\n");
+//         exit(1);
+//     }
+
+//     int contador = 0;
+//     while ((de = readdir(dr)) != NULL)
+//     {
+//         if (strcmp(de->d_name, ".") != 0 && strcmp(de->d_name, "..") != 0)
+//         {
+//             usuarios[contador] = de->d_name;
+
+//             contador++;
+//         }
+//     }
+
+//     closedir(dr);
 // }
 
 // void quantidade_clientes_com_debito(void)
@@ -123,10 +154,10 @@ void opcoes_admin(void)
     {
         quantidade_clientes();
     }
-    // else if (opcao == 2)
-    // {
-    //     quantidade_clientes_sem_debito();
-    // }
+    else if (opcao == 2)
+    {
+        // quantidade_clientes_sem_debito();
+    }
     // else if (opcao == 3)
     // {
     //     quantidade_clientes_com_debito();
