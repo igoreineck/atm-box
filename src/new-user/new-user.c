@@ -96,6 +96,83 @@ int cpf_verification(char * cpf)
   	} 
 }
 
+void salvarUsuario(const char * path, char* conteudo)
+{
+    FILE *file;
+    char conteudoCopy[strlen(conteudo)];
+    long fileSize;    
+
+    strcpy(conteudoCopy, conteudo);
+
+    file = fopen(path, "wb+");
+
+    if(file == NULL){
+		
+			printf("Erro ao salvar o arquivo\n");
+			exit(1);
+	}
+    
+    fwrite(conteudoCopy, sizeof(conteudoCopy[0]), sizeof(conteudoCopy)/sizeof(conteudoCopy[0]), file);
+
+    fclose(file);
+
+}
+
+int novoUsuario(void)
+{
+    FILE *file;
+
+    int totalUsuariosAtual = 0, novoTotalUsuarios = 0;
+
+    file = fopen("../src/new-user/total.bin", "rb");
+
+    if(file == NULL){
+        
+        file = fopen("../src/new-user/total.bin", "wb+");
+
+        novoTotalUsuarios = 1;
+        
+        fwrite(&novoTotalUsuarios, sizeof(int), 1, file);
+
+	}
+    else
+    {
+        fread(&totalUsuariosAtual, 1 , sizeof(int), file);
+        
+        novoTotalUsuarios = totalUsuariosAtual + 1;
+
+        file = fopen("../src/new-user/total.bin", "wb+");
+        
+        fwrite(&novoTotalUsuarios, sizeof(int), 1, file);
+    }
+
+    fclose(file);
+
+    return totalUsuariosAtual;
+}
+
+char* gerarCaminho(int numeroUsuario, char * arquivo)
+{
+
+	char caminho[] = "../data/usuario_";
+	char totalUsuariosAtualString[20];
+
+	snprintf(totalUsuariosAtualString, 20, "%d", numeroUsuario);
+	
+	strcat(caminho, totalUsuariosAtualString);
+
+	mkdir(caminho, 777);
+
+	strcat(caminho, arquivo);
+	
+	char *buffer = malloc(sizeof(char) * strlen(caminho));
+	for(int i = 0; i < strlen(caminho); ++i) {
+		buffer[i] = caminho[i];
+	}
+	
+	return buffer;
+}
+
 int new_user(void) 
 {
 	int cpf_status = 0, 
@@ -111,9 +188,8 @@ int new_user(void)
 	struct users 
 	{
 		char name[30];
-		char cpf[13];
+		char cpf[12];
 		char password[255];
-		//char *encrypted_password;
 	} user;
 
 	show_header_signup();
@@ -126,7 +202,7 @@ int new_user(void)
 	while (!cpf_status)
 	{
 		printf("Digite seu CPF: ");
-		fgets(user.cpf, 13, stdin);
+		fgets(user.cpf, 12, stdin);
 
 		__fpurge(stdin);
 
@@ -137,7 +213,7 @@ int new_user(void)
 	 		show_header_signup();		
 
 	 		printf("Digite seu nome: %s", user.name);
-	 		printf("Digite seu CPF: %s", user.cpf);
+	 		printf("Digite seu CPF: %s\n", user.cpf);
 			printf("Digite a sua senha com 6 caracteres: ");
 
 			fgets(user.password, 255, stdin);
@@ -153,7 +229,7 @@ int new_user(void)
 					show_header_signup();		
 
 					printf("Digite seu nome: %s", user.name);
-					printf("Digite seu CPF: %s", user.cpf);
+					printf("Digite seu CPF: %s\n", user.cpf);
 					printf("Confirme sua senha: ");
 
 					fgets(password_verification, 255, stdin);
@@ -233,50 +309,22 @@ int new_user(void)
 
 	system("clear");
 
- 	FILE * fPointer;
-	
-	fPointer = fopen("../data/total.txt", "r");
+ 	int numeroUsuario = novoUsuario();
 
-	while (!feof(fPointer))
-	{
-		fgets(totalUsersString, 2, fPointer);
-		puts(totalUsersString);
-	}
-	fclose(fPointer);
+	char arquivo_cpf[] = "/cpf.bin";
+    char* buffer = gerarCaminho(numeroUsuario , arquivo_cpf);
+	salvarUsuario(buffer, user.cpf);
+	free(buffer);    
 
-	for (i = 0; i < 11; i++) 
-	{  
-        totalUsers[i] = totalUsersString[i] - 48;  
-    } 
+	char arquivo_nome[] = "/nome.bin";
+   	buffer = gerarCaminho(numeroUsuario , arquivo_nome);
+    salvarUsuario(buffer, user.name);
+	free(buffer);
 
-
-	newTotal = totalUsers[0] + 1;
-	
-	char pathname[20] = "../data/user_";
-
-	strcat(pathname, totalUsersString);
-
-	mkdir(pathname, 777);
-
-	strcat(pathname, "/data");
-
-	fPointer = fopen(pathname, "w");
-
-	fprintf(fPointer, user.cpf);
-	fprintf(fPointer, user.password);
-	fprintf(fPointer, user.name);
-
-	fclose(fPointer);
-
-	fPointer = fopen("../data/total.txt", "w");
-
-	snprintf(totalUsersString, 20, "%d", newTotal);
-	
-	fprintf(fPointer, totalUsersString);
-
-	fclose(fPointer);	
-
-	system("clear");
+	char arquivo_senha[] = "/senha.bin";
+    buffer = gerarCaminho(numeroUsuario , arquivo_senha); 
+	salvarUsuario(buffer, user.password);
+	free(buffer);    
 
 	printf("ACABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\n");
 
