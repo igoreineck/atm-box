@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <sys/stat.h>
+#include <errno.h>
 #include "admin.h"
 
 void show_header_admin(void) 
@@ -62,12 +64,6 @@ void backlog_usuarios(void)
     fclose(file);
 }
 
-/**
- * LEMBRAR!! APLICAR FUNÇÃO DE RETORNO PARA A LEITURA DOS NOMES DAS PASTAS SALVAS EM DATA
- * ARMAZENAR RETORNO EM ARRAY DE DADOS PARA FACILITAR O ACESSO AS PASTAS
- * UTILIZAR O ARRAY DE DADOS PARA ACESSAR AS INFORMAÇÕES BANCÁRIAS DE CADA USUÁRIO
- */
-
 void quantidade_clientes(void)
 {
     FILE *file;
@@ -90,40 +86,111 @@ void quantidade_clientes(void)
     printf("Quantidade de clientes cadastrados: %d\n", quantidade_clientes);
 }
 
-// void quantidade_clientes_sem_debito(void)
-// {
-//     // show_header_admin()
-//     int quantidade_pastas = varredura_de_pastas();
-//     const char *usuarios[quantidade_pastas + 1];
+void quantidade_clientes_sem_debito(void)
+{
+    show_header_admin();
+    int quantidade_pastas = varredura_de_pastas();
+    int quantidade_clientes_sem_debito = 0;
 
-//     struct dirent *de;
+    struct dirent *info_user;
 
-//     DIR *dr = opendir("../data");
+    FILE *archive;
+    DIR *directory = opendir("../data");
 
-//     if (dr == NULL)
-//     {
-//         printf("Não é possível abrir o diretório.\n");
-//         exit(1);
-//     }
+    if (directory == NULL)
+    {
+        printf("Não é possível abrir o diretório.\n");
+        exit(1);
+    }
 
-//     int contador = 0;
-//     while ((de = readdir(dr)) != NULL)
-//     {
-//         if (strcmp(de->d_name, ".") != 0 && strcmp(de->d_name, "..") != 0)
-//         {
-//             usuarios[contador] = de->d_name;
+    while ((info_user = readdir(directory)) != NULL)
+    {
+        if (strcmp(info_user->d_name, ".") != 0 && strcmp(info_user->d_name, "..") != 0)
+        {
+            float valor_em_conta = 0;
+            char path_user[] = "../data/";
+            strcat(path_user, info_user->d_name);
+            strcat(path_user, "/caixa.bin");
 
-//             contador++;
-//         }
-//     }
+            if ((archive = fopen(path_user, "rb")) == NULL)
+            {
+                printf("Erro no arquivo %s\n", strerror(errno));
+                exit(1);
+            }
 
-//     closedir(dr);
-// }
+            if (fread(&valor_em_conta, sizeof(float), 1, archive) != 1)
+            {
+                printf("Erro na leitura do arquivo.\n");
+                fclose(archive);
+                continue;
+            }
 
-// void quantidade_clientes_com_debito(void)
-// {
-    // show_header_admin();
-// }
+            if (valor_em_conta <= 0)
+            {
+                quantidade_clientes_sem_debito++;
+            }
+
+            fclose(archive);
+        }
+    }
+    
+    closedir(directory);
+
+    printf("A quantidade de clientes sem débito é de %d.\n", quantidade_clientes_sem_debito);
+}
+
+void quantidade_clientes_com_debito(void)
+{
+    show_header_admin();
+    int quantidade_pastas = varredura_de_pastas();
+    int quantidade_clientes_com_debito = 0;
+
+    struct dirent *info_user;
+
+    FILE *archive;
+    DIR *directory = opendir("../data");
+
+    if (directory == NULL)
+    {
+        printf("Não é possível abrir o diretório.\n");
+        exit(1);
+    }
+
+    while ((info_user = readdir(directory)) != NULL)
+    {
+        if (strcmp(info_user->d_name, ".") != 0 && strcmp(info_user->d_name, "..") != 0)
+        {
+            float valor_em_conta = 0;
+            char path_user[] = "../data/";
+            strcat(path_user, info_user->d_name);
+            strcat(path_user, "/caixa.bin");
+
+            if ((archive = fopen(path_user, "rb")) == NULL)
+            {
+                printf("Erro no arquivo %s\n", strerror(errno));
+                exit(1);
+            }
+
+            if (fread(&valor_em_conta, sizeof(float), 1, archive) != 1)
+            {
+                printf("Erro na leitura do arquivo.\n");
+                fclose(archive);
+                continue;
+            }
+
+            if (valor_em_conta > 0)
+            {
+                quantidade_clientes_com_debito++;
+            }
+
+            fclose(archive);
+        }
+    }
+    
+    closedir(directory);
+
+    printf("A quantidade de clientes com débito é de %d.\n", quantidade_clientes_com_debito);
+}
 
 // void valor_mais_baixo_em_conta(void)
 // {
@@ -156,12 +223,12 @@ void opcoes_admin(void)
     }
     else if (opcao == 2)
     {
-        // quantidade_clientes_sem_debito();
+        quantidade_clientes_sem_debito();
     }
-    // else if (opcao == 3)
-    // {
-    //     quantidade_clientes_com_debito();
-    // }
+    else if (opcao == 3)
+    {
+        quantidade_clientes_com_debito();
+    }
     // else if (opcao == 4)
     // {
     //     valor_mais_baixo_em_conta();

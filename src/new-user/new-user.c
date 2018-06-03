@@ -122,13 +122,14 @@ int novoUsuario(void)
 {
     FILE *file;
 
-    int totalUsuariosAtual = 0, novoTotalUsuarios = 0;
+    int totalUsuariosAtual = 0, 
+    	novoTotalUsuarios = 0;
 
-    file = fopen("../src/new-user/total.bin", "rb");
+    file = fopen("new-user/total.bin", "rb");
 
     if(file == NULL){
         
-        file = fopen("../src/new-user/total.bin", "wb+");
+        file = fopen("new-user/total.bin", "wb+");
 
         novoTotalUsuarios = 1;
         
@@ -141,7 +142,7 @@ int novoUsuario(void)
         
         novoTotalUsuarios = totalUsuariosAtual + 1;
 
-        file = fopen("../src/new-user/total.bin", "wb+");
+        file = fopen("new-user/total.bin", "wb+");
         
         fwrite(&novoTotalUsuarios, sizeof(int), 1, file);
     }
