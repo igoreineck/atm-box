@@ -20,27 +20,27 @@ void show_header_admin(void)
 
 int varredura_de_pastas(void)
 {
-    struct dirent *de;
+    struct dirent *user;
 
     int quantidade_pastas = 0;
 
-    DIR *dr = opendir("../data");
+    DIR *directory = opendir("../data");
 
-    if (dr == NULL)
+    if (directory == NULL)
     {
-        printf("Could not open current directory" );
+        printf("Não foi possível abrir o diretório atual");
         exit(1);
     }
 
-    while ((de = readdir(dr)) != NULL)
+    while ((user = readdir(directory)) != NULL)
     {
-        if (strcmp(de->d_name, ".") != 0 && strcmp(de->d_name, "..") != 0)
+        if (strcmp(user->d_name, ".") != 0 && strcmp(user->d_name, "..") != 0)
         {
             quantidade_pastas++;
         }
     }
 
-    closedir(dr);
+    closedir(directory);
 
     return quantidade_pastas;
 }
