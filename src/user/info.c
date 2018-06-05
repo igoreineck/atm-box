@@ -1,26 +1,3 @@
-/* 
-Métodos
-
-Opcao 1 - Saldo
-    Exibir valor em caixa (variável saldo)
-
-Opcao 2 - Deposito (valor)
-    Inserir valor no saldo
-    Retornar novo saldo
-
-Opcao 3 - Saque (valor)
-    Remover valor a partir do saldo
-    Retornar novo saldo
-
-Opcao 4 - Informacoes da conta
-    Exibir CPF
-    Exibir nome
-
-Opcao 5 - Redefinir senha
-    Senha encriptada
-
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

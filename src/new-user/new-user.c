@@ -1,19 +1,3 @@
-/* 
-    - gcc new-user.c -o teste -w
-    - comando para compilar, o -w ignora os warnings gerados pelo __fpurge(stdin)
-
-Métodos:
-
-Opcao 1 - Digitar CPF
-
-Opcao 2 - Digitar Nome
-
-Opcao 3 (Implícita) - Geração automática de senha (6 dígitos) 
-
-* Após criação, retornar os dados do usuário (somente: nome e cpf)
-
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -96,28 +80,6 @@ int cpf_verification(char * cpf)
   	} 
 }
 
-void salvarUsuario(const char * path, char* conteudo)
-{
-    FILE *file;
-    char conteudoCopy[strlen(conteudo)];
-    long fileSize;    
-
-    strcpy(conteudoCopy, conteudo);
-
-    file = fopen(path, "wb+");
-
-    if(file == NULL){
-		
-			printf("Erro ao salvar o arquivo\n");
-			exit(1);
-	}
-    
-    fwrite(conteudoCopy, sizeof(conteudoCopy[0]), sizeof(conteudoCopy)/sizeof(conteudoCopy[0]), file);
-
-    fclose(file);
-
-}
-
 int novoUsuario(void)
 {
     FILE *file;
@@ -125,16 +87,15 @@ int novoUsuario(void)
     int totalUsuariosAtual = 0, 
     	novoTotalUsuarios = 0;
 
-    file = fopen("new-user/total.bin", "rb");
+    file = fopen("../src/new-user/total.bin", "rb");
 
-    if(file == NULL){
-        
-        file = fopen("new-user/total.bin", "wb+");
+    if (file == NULL)
+    {
+        file = fopen("../src/new-user/total.bin", "w+b");
 
         novoTotalUsuarios = 1;
         
         fwrite(&novoTotalUsuarios, sizeof(int), 1, file);
-
 	}
     else
     {
@@ -142,7 +103,7 @@ int novoUsuario(void)
         
         novoTotalUsuarios = totalUsuariosAtual + 1;
 
-        file = fopen("new-user/total.bin", "wb+");
+        file = fopen("../src/new-user/total.bin", "w+b");
         
         fwrite(&novoTotalUsuarios, sizeof(int), 1, file);
     }
@@ -152,9 +113,8 @@ int novoUsuario(void)
     return totalUsuariosAtual;
 }
 
-char* gerarCaminho(int numeroUsuario, char * arquivo)
+char *gerarCaminho(int numeroUsuario, char *arquivo)
 {
-
 	char caminho[] = "../data/usuario_";
 	char totalUsuariosAtualString[20];
 
@@ -162,16 +122,41 @@ char* gerarCaminho(int numeroUsuario, char * arquivo)
 	
 	strcat(caminho, totalUsuariosAtualString);
 
-	mkdir(caminho, 777);
+	mkdir(caminho, 0777);
 
 	strcat(caminho, arquivo);
 	
 	char *buffer = malloc(sizeof(char) * strlen(caminho));
-	for(int i = 0; i < strlen(caminho); ++i) {
+
+	for (int i = 0; i < strlen(caminho); ++i) 
+	{
 		buffer[i] = caminho[i];
 	}
 	
 	return buffer;
+}
+
+void salvarUsuario(const char *path, char *conteudo)
+{
+    FILE *file;
+    char conteudoCopy[strlen(conteudo)];
+    char pathCopy[strlen(path)];
+
+    strcpy(conteudoCopy, conteudo);
+    strcpy(pathCopy, path);
+
+    if ((file = fopen(pathCopy, "w+b")) == NULL)
+    {
+    	printf("Erro ao abrir o arquivo.\n");
+    	printf(path);
+    	printf("\n");
+    	printf(conteudo);
+    	exit(1);
+    }
+    
+    fwrite(conteudoCopy, sizeof(conteudoCopy[0]), sizeof(conteudoCopy)/sizeof(conteudoCopy[0]), file);
+
+    fclose(file);
 }
 
 int new_user(void) 
@@ -311,11 +296,12 @@ int new_user(void)
 	system("clear");
 
  	int numeroUsuario = novoUsuario();
+ 	const char *buffer;
 
 	char arquivo_cpf[] = "/cpf.bin";
-    char* buffer = gerarCaminho(numeroUsuario , arquivo_cpf);
+    buffer = gerarCaminho(numeroUsuario, arquivo_cpf);
 	salvarUsuario(buffer, user.cpf);
-	free(buffer);    
+	free(buffer);
 
 	char arquivo_nome[] = "/nome.bin";
    	buffer = gerarCaminho(numeroUsuario , arquivo_nome);
@@ -326,8 +312,5 @@ int new_user(void)
     buffer = gerarCaminho(numeroUsuario , arquivo_senha); 
 	salvarUsuario(buffer, user.password);
 	free(buffer);    
-
-	printf("ACABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\n");
-
 }
 
