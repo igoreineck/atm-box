@@ -148,9 +148,6 @@ void salvarUsuario(const char *path, char *conteudo)
     if ((file = fopen(pathCopy, "w+b")) == NULL)
     {
     	printf("Erro ao abrir o arquivo.\n");
-    	printf(path);
-    	printf("\n");
-    	printf(conteudo);
     	exit(1);
     }
     
@@ -311,6 +308,6 @@ int new_user(void)
 	char arquivo_senha[] = "/senha.bin";
     buffer = gerarCaminho(numeroUsuario , arquivo_senha); 
 	salvarUsuario(buffer, user.password);
-	free(buffer);    
+	free(buffer);
 }
 

@@ -20,7 +20,7 @@ void saldo_usuario(void)
     FILE *file;
     float valor_saldo;
 
-    if ((file = fopen("../data/usuario/caixa.bin", "rb")) == NULL)
+    if ((file = fopen("../data/usuario_0/caixa.bin", "rb")) == NULL)
     {
         printf("Erro ao abrir o arquivo.\n");
         exit(1);
@@ -46,7 +46,7 @@ void deposito_usuario(void)
     printf("\nDigite um valor para deposito: ");
     scanf("%f", &valor_para_deposito);
 
-    if ((file = fopen("../data/usuario/caixa.bin", "wb")) == NULL)
+    if ((file = fopen("../data/usuario_0/caixa.bin", "wb")) == NULL)
     {
         printf("Erro na abertura do arquivo.\n");
         exit(1);
@@ -75,7 +75,7 @@ void saque_usuario(void)
     printf("\nDigite um valor para saque: ");
     scanf("%f", &valor_para_saque);
 
-    if ((file = fopen("../data/usuario/caixa.bin", "rb")) == NULL)
+    if ((file = fopen("../data/usuario_0/caixa.bin", "rb")) == NULL)
     {
         printf("Erro na abertura do arquivo.\n");
     }
@@ -90,7 +90,8 @@ void saque_usuario(void)
     show_header();
     printf("\nSaldo atual: %0.4f \n", saldo);
 
-    if (saldo > 0) {
+    if (saldo > 0) 
+    {
         saldo -= valor_para_saque;
     }
     else if (saldo == 0)
@@ -104,7 +105,7 @@ void saque_usuario(void)
         printf("\nSeu saldo está negativo. Não será possível realizar um saque.\n");
     }
 
-    if ((file = fopen("../data/usuario/caixa.bin", "wb")) == NULL)
+    if ((file = fopen("../data/usuario_0/caixa.bin", "wb")) == NULL)
     {
         printf("Erro na abertura do arquivo.\n");
     }
@@ -149,7 +150,9 @@ void acessar_informacoes_monetarias(void)
 
 void acessar_informacoes_conta(void) 
 {
+    // FILE *file;
 
+    
 }
 
 void informacoes_usuario(void) 
@@ -157,6 +160,7 @@ void informacoes_usuario(void)
     int opcao = 0;
 
     show_header();
+    
     printf("\nDigite uma das opções abaixo: \n");
     printf("1 - Informações da Conta \n");
     printf("2 - Informações monetárias da Conta \n");
