@@ -5,21 +5,28 @@
 
 int login(void)
 {
+    int i = 0, 
+        qnt_usuario;
 
-    int i = 0, qnt_usuario;
-    char i_str[5];
-    char path[40], cpf[12], senha[255];
+    char i_str[5],
+         path[40], 
+         cpf[12], 
+         senha[255];
 
     printf("CPF: ");
     fgets(cpf, 12, stdin);
+
     __fpurge(stdin);
 
     printf("senha: ");
     fgets(senha, 255, stdin);
+
     __fpurge(stdin);
 
     FILE *file_qnt_user;
+
     file_qnt_user = fopen("../src/new-user/total.bin", "rb");
+
     fread(&qnt_usuario, 1 , sizeof(int), file_qnt_user);
     fclose(file_qnt_user);
 
@@ -30,14 +37,17 @@ int login(void)
         strcat(path, i_str);
         strcat(path, "/user_data.bin");
 
-        struct user *object=malloc(sizeof(struct user));
+        struct user *object = malloc(sizeof(struct user));
+
         FILE * file= fopen(path, "rb");
-        if (file != NULL) {
+
+        if (file != NULL) 
+        {
             fread(object, sizeof(struct user), 1, file);
             fclose(file);
         }
 
-        if(strcmp(object->cpf, cpf) == 0 && strcmp(object->password, senha) == 0)
+        if (strcmp(object->cpf, cpf) == 0 && strcmp(object->password, senha) == 0)
         {
             informacoes_usuario();
         }

@@ -23,10 +23,12 @@ int main(void) {
     int option = 0;
 
     show_main_header();
-    printf("\nDigite uma das opções abaixo: \n");
-    printf("Digite 1 - Para criar uma conta. \n");
-    printf("Digite 2 - Para acessar as informações da sua conta. \n");
-    printf("Digite 3 - Para acessar as opções de Administrador. \n");
+    printf("DIGITE UMA DAS OPÇÕES ABAIXO: \n");
+    printf("-------------------------------------------------------\n");
+    printf("Digite 1 - Para criar uma conta.\n");
+    printf("Digite 2 - Para acessar as informações da sua conta.\n");
+    printf("Digite 3 - Para acessar as opções de Administrador.\n");
+    printf("-------------------------------------------------------\n");
     scanf("%d", &option);
 
     __fpurge(stdin);
