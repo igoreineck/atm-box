@@ -13,3 +13,19 @@ struct estrutura
     float valor;
     char data[11];
 };
+
+struct path_usuario 
+{
+	char nome[9];
+	char cpf[8];
+	char senha[10];
+};
+
+struct usuario
+{
+	char nome[30];
+	char cpf[12];
+	char senha[255];
+};
+
+typedef struct estrutura Transacao;

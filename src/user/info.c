@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <dirent.h>
 #include "info.h"
 
 void show_header(void) 
@@ -17,63 +18,85 @@ void show_header(void)
 
 void acessar_informacoes_conta(void) 
 {
-    // FILE *file;
+    struct path_usuario *Arquivo = malloc(sizeof(struct path_usuario));
+    struct usuario *Usuario = malloc(sizeof(struct usuario));
 
-    // if ((file = fopen("../data/usuario_0/nome.bin", "rb")) == NULL)
-    // {
-    //     printf("Erro na abertura do arquivo.\n");
-    //     exit(1);
-    // }
-    
-    // char nome[(sizeof(file)/sizeof(char))];
+    strcpy(Arquivo->nome, "nome.bin");
+    strcpy(Arquivo->cpf, "cpf.bin");
+    strcpy(Arquivo->senha, "senha.bin");
 
-    // if (fread(&nome, sizeof(file), 1, file) != 1)
-    // {
-    //     printf("Erro na leitura do arquivo.\n");
-    //     printf("Arquivo: nome\n");
-    //     exit(1);
-    // }
+    FILE *arquivo;
 
-    // fclose(file);
+    char absolute_path[] = "../data/usuario_0/";
 
-    // if ((file = fopen("../data/usuario_0/cpf.bin", "rb")) == NULL)
-    // {
-    //     printf("Erro na abertura do arquivo.\n");
-    //     exit(1);
-    // }
+    char absolute_path_copy[strlen(absolute_path)];
+    strcpy(absolute_path_copy, absolute_path);
+    strcat(absolute_path_copy, Arquivo->nome);
 
-    // char cpf[(sizeof(file)/sizeof(char))];
+    struct usuario *objeto = malloc(sizeof(struct usuario));
 
-    // if (fread(&cpf, (sizeof(file)/sizeof(char)), 1, file) != 1)
-    // {
-    //     printf("Erro na leitura do arquivo.\n");
-    //     printf("Arquivo: cpf\n");
-    //     exit(1);
-    // }
+    arquivo = fopen(absolute_path_copy, "rb");
 
-    // fclose(file);
+    if (arquivo != NULL)
+    {
+        fread(objeto->nome, sizeof(Usuario->nome), 1, arquivo);
+        fclose(arquivo);
+        memset(absolute_path_copy, 0, sizeof absolute_path_copy);
+    }
+    else
+    {
+        printf("Não foi possível abrir o arquivo nome.bin\n");
+        exit(1);
+    }
 
-    // if ((file = fopen("../data/usuario_0/senha.bin", "rb")) == NULL)
-    // {
-    //     printf("Erro na abertura do arquivo.\n");
-    //     exit(1);
-    // }
+    strcpy(absolute_path_copy, absolute_path);
+    strcat(absolute_path_copy, Arquivo->cpf);
 
-    // // char senha[sizeof(char)] = {'0'};
+    arquivo = fopen(absolute_path_copy, "rb");
 
-    // if (fread(&senha, sizeof(char), 1, file) != 1)
-    // {
-    //     printf("Erro na leitura do arquivo.\n");
-    //     printf("Arquivo: senha\n");
-    //     exit(1);
-    // }
+    if (arquivo != NULL)
+    {
+        fread(objeto->cpf, sizeof(Usuario->cpf), 1, arquivo);
+        fclose(arquivo);
+        memset(absolute_path_copy, 0, sizeof absolute_path_copy);
+    }
+    else
+    {
+        printf("Não foi possível abrir o arquivo cpf.bin\n");
+        exit(2);
+    }
 
-    // fclose(file);
+    strcpy(absolute_path_copy, absolute_path);
+    strcat(absolute_path_copy, Arquivo->senha);
 
-    // printf("Seus dados são:\n");
-    // printf("Nome: %s\n", nome);
-    // printf("CPF: %s\n", cpf);
-    // printf("Senha: %s\n", senha);
+    arquivo = fopen(absolute_path_copy, "rb");
+
+    if (arquivo != NULL)
+    {
+        fread(objeto->senha, sizeof(Usuario->senha), 1, arquivo);
+        fclose(arquivo);
+        memset(absolute_path_copy, 0, sizeof absolute_path_copy);
+    }
+    else
+    {
+        printf("Não foi possível abrir o arquivo senha.bin\n");
+        exit(3);
+    }
+
+    show_header();
+
+    printf("INFORMAÇÕES DA CONTA\n");
+    printf("------------------------\n");
+    printf("Nome: %s", objeto->nome);
+    printf("CPF: %s\n", objeto->cpf);
+    printf("Senha: %s", objeto->senha);
+    printf("------------------------\n");
+
+    printf("\n");
+
+    free(Arquivo);
+    free(Usuario);
+    free(objeto);
 }
 
 void informacoes_usuario(void) 
@@ -255,7 +278,7 @@ void saque_usuario(void)
     fclose(file);
 
     show_header();
-    printf("\nNovo saldo: %0.4f \n", saldo);
+    printf("\nNovo saldo: %0.2f \n", saldo);
 
     struct estrutura *sacar = malloc(sizeof(struct estrutura));
 
@@ -263,15 +286,10 @@ void saque_usuario(void)
     sacar->valor = valor_para_saque;
     strcpy(sacar->data, "12/06/2018");
 
-    // adicionar_transacao(sacar);
+    adicionar_transacao(sacar);
 
     free(sacar);
 }
-
-const char path[] = "../data/usuario_0/transacoes/transacao.bin";
-
-typedef struct estrutura Transacao;
-
 
 // LEMBRAR DE MIGRAR ESTE MÓDULO PARA O MÓDULO DE CRIAÇÃO DE USUARIO
 void criar_modulo_de_transacoes(void)
@@ -343,34 +361,47 @@ void adicionar_transacao(struct estrutura *transacao)
 
 void acessar_extrato_da_conta()
 {
-    
+    struct dirent *entry;
 
+    char path_transacao[] = "../data/usuario_0/transacoes/";
+    char copy_path_transacao[strlen(path_transacao)];
 
+    FILE *arquivo;
 
+    DIR *diretorio = opendir("../data/usuario_0/transacoes");
 
+    if (diretorio == NULL)
+    {
+        printf("Erro ao abrir o diretorio.\n");
+        return;
+    }
 
+    while ((entry = readdir(diretorio)) != NULL)
+    {
+        if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0)
+        {
+            struct estrutura *objeto = malloc(sizeof(struct estrutura));
+            
+            strcpy(copy_path_transacao, path_transacao);
+            strcat(copy_path_transacao, entry->d_name);
 
+            arquivo = fopen(copy_path_transacao, "rb");
 
+            if (arquivo != NULL)
+            {
+                fread(objeto, sizeof(struct estrutura), 1, arquivo);
 
-    
-    // struct estrutura *objeto2 = malloc(sizeof(struct estrutura));
+                printf("[Tipo da transação: %s | ", objeto->tipo);
+                printf("Valor da transação: %0.2f | ", objeto->valor);
+                printf("Data da transação: %s]\n", objeto->data);
+            }
 
-    // FILE *arq;
-    // if ((arq = fopen(path, "rb")) == NULL)
-    // {
-    //     printf("Erro ao abrir o arquivo.\n");
-    //     exit(1);
-    // }
+            memset(copy_path_transacao, 0, sizeof copy_path_transacao);
 
-    // if (fread(objeto2, sizeof(struct estrutura), 1, arq) != 1)
-    // {
-    //     printf("Erro na leitura do arquivo.\n");
-    //     exit(1);
-    // }
-    // else 
-    // {
-    //     fclose(arq);
-    // }
+            fclose(arquivo);
+            free(objeto);
+        }
+    }
 
-    // printf("%s/%0.2f/%s\n", objeto2->tipo, objeto2->valor, objeto2->data);
+    closedir(diretorio);
 }
