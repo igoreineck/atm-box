@@ -113,19 +113,19 @@ int novoUsuario(void)
     return totalUsuariosAtual;
 }
 
-char *gerarCaminho(int numeroUsuario, char *arquivo)
+char *gerarCaminho(int numeroUsuario)
 {
-	char caminho[] = "../data/usuario_";
-	char totalUsuariosAtualString[20];
+	char caminho[100] = "../data/usuario_";
+	char totalUsuariosAtualString[5];
 
-	snprintf(totalUsuariosAtualString, 20, "%d", numeroUsuario);
+	snprintf(totalUsuariosAtualString, 5, "%d", numeroUsuario);
 	
 	strcat(caminho, totalUsuariosAtualString);
 
 	mkdir(caminho, 0777);
 
-	strcat(caminho, arquivo);
-	
+	strcat(caminho, "/user_data.bin");
+
 	char *buffer = malloc(sizeof(char) * strlen(caminho));
 
 	for (int i = 0; i < strlen(caminho); ++i) 
@@ -136,22 +136,26 @@ char *gerarCaminho(int numeroUsuario, char *arquivo)
 	return buffer;
 }
 
-void salvarUsuario(const char *path, char *conteudo)
+void salvarUsuario(const char *path, char *cpf, char *nome, char *senha)
 {
-    FILE *file;
-    char conteudoCopy[strlen(conteudo)];
-    char pathCopy[strlen(path)];
 
-    strcpy(conteudoCopy, conteudo);
+    char pathCopy[strlen(path)];
     strcpy(pathCopy, path);
 
-    if ((file = fopen(pathCopy, "w+b")) == NULL)
-    {
-    	printf("Erro ao abrir o arquivo.\n");
-    	exit(1);
+	struct user *object=malloc(sizeof(struct user));
+    strcpy(object->name , nome);
+    strcpy(object->cpf , cpf);
+    strcpy(object->password , senha);
+
+    FILE * file= fopen(pathCopy, "wb");
+    if (file != NULL) {
+        fwrite(object, sizeof(struct user), 1, file);
     }
-    
-    fwrite(conteudoCopy, sizeof(conteudoCopy[0]), sizeof(conteudoCopy)/sizeof(conteudoCopy[0]), file);
+	else
+	{
+		printf("Erro ao abrir o arquivo.\n");
+    	exit(1);
+	}
 
     fclose(file);
 }
@@ -167,14 +171,9 @@ int new_user(void)
 	char password_verification[255],
 		 totalUsersString[2], 
 		 totalUsers[2];
-
-	struct users 
-	{
-		char name[30];
-		char cpf[12];
-		char password[255];
-	} user;
-
+	
+	struct user user;
+	
 	show_header_signup();
 
 	printf("Digite seu nome: ");
@@ -295,19 +294,18 @@ int new_user(void)
  	int numeroUsuario = novoUsuario();
  	const char *buffer;
 
-	char arquivo_cpf[] = "/cpf.bin";
-    buffer = gerarCaminho(numeroUsuario, arquivo_cpf);
-	salvarUsuario(buffer, user.cpf);
+    buffer = gerarCaminho(numeroUsuario);
+	salvarUsuario(buffer, user.cpf, user.name, user.password);
 	free(buffer);
 
-	char arquivo_nome[] = "/nome.bin";
-   	buffer = gerarCaminho(numeroUsuario , arquivo_nome);
-    salvarUsuario(buffer, user.name);
-	free(buffer);
+	// char arquivo_nome[] = "/nome.bin";
+   	// buffer = gerarCaminho(numeroUsuario , arquivo_nome);
+    // salvarUsuario(buffer, user.name);
+	// free(buffer);
 
-	char arquivo_senha[] = "/senha.bin";
-    buffer = gerarCaminho(numeroUsuario , arquivo_senha); 
-	salvarUsuario(buffer, user.password);
-	free(buffer);
+	// char arquivo_senha[] = "/senha.bin";
+    // buffer = gerarCaminho(numeroUsuario , arquivo_senha); 
+	// salvarUsuario(buffer, user.password);
+	// free(buffer);
 }
 
