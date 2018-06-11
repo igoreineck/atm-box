@@ -37,7 +37,7 @@ int main(void) {
     }
     else if (option == 2) 
     {
-        informacoes_usuario();
+        login();
     }
     else
     {
