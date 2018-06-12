@@ -160,6 +160,24 @@ void salvarUsuario(const char *path, char *cpf, char *nome, char *senha)
     fclose(file);
 }
 
+void criar_modulo_de_transacoes(int numero_usuario)
+{
+	char caminho_transacoes[100] = "../data/usuario_";
+	char caminho_backlog[100] = "../data/usuario_";
+	char total_usuarios_atual_string[5];
+
+	snprintf(total_usuarios_atual_string, 5, "%d", numero_usuario);
+
+	strcat(caminho_transacoes, total_usuarios_atual_string);
+	strcat(caminho_backlog, total_usuarios_atual_string);
+
+	strcat(caminho_transacoes, "/transacoes/");
+	strcat(caminho_backlog, "/backlog_transacoes/");
+
+    mkdir(caminho_transacoes, 0777);
+    mkdir(caminho_backlog, 0777);
+}
+
 int new_user(void) 
 {
 	int cpf_status = 0, 
@@ -294,18 +312,11 @@ int new_user(void)
  	int numeroUsuario = novoUsuario();
  	const char *buffer;
 
+
     buffer = gerarCaminho(numeroUsuario);
 	salvarUsuario(buffer, user.cpf, user.name, user.password);
 	free(buffer);
 
-	// char arquivo_nome[] = "/nome.bin";
-   	// buffer = gerarCaminho(numeroUsuario , arquivo_nome);
-    // salvarUsuario(buffer, user.name);
-	// free(buffer);
-
-	// char arquivo_senha[] = "/senha.bin";
-    // buffer = gerarCaminho(numeroUsuario , arquivo_senha); 
-	// salvarUsuario(buffer, user.password);
-	// free(buffer);
+ 	criar_modulo_de_transacoes(numeroUsuario);
 }
 

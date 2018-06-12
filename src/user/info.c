@@ -291,14 +291,6 @@ void saque_usuario(void)
     free(sacar);
 }
 
-// LEMBRAR DE MIGRAR ESTE MÓDULO PARA O MÓDULO DE CRIAÇÃO DE USUARIO
-void criar_modulo_de_transacoes(void)
-{
-    // mkdir("../data/usuario_0/transacoes/", 0777);
-    mkdir("../data/usuario_0/backlog_transacoes/", 0777);
-}
-/*********************************************************************************/
-
 int gerar_registro_da_transacao(void)
 {
     FILE *arquivo;
