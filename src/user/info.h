@@ -16,9 +16,7 @@ struct estrutura
 
 struct path_usuario 
 {
-	char nome[9];
-	char cpf[8];
-	char senha[10];
+	char file[14];
 };
 
 struct usuario

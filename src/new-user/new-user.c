@@ -142,13 +142,15 @@ void salvarUsuario(const char *path, char *cpf, char *nome, char *senha)
     char pathCopy[strlen(path)];
     strcpy(pathCopy, path);
 
-	struct user *object=malloc(sizeof(struct user));
+	struct user *object = malloc(sizeof(struct user));
     strcpy(object->name , nome);
     strcpy(object->cpf , cpf);
     strcpy(object->password , senha);
 
     FILE * file= fopen(pathCopy, "wb");
-    if (file != NULL) {
+
+    if (file != NULL) 
+    {
         fwrite(object, sizeof(struct user), 1, file);
     }
 	else
@@ -311,7 +313,6 @@ int new_user(void)
 
  	int numeroUsuario = novoUsuario();
  	const char *buffer;
-
 
     buffer = gerarCaminho(numeroUsuario);
 	salvarUsuario(buffer, user.cpf, user.name, user.password);

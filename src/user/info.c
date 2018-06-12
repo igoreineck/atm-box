@@ -21,9 +21,7 @@ void acessar_informacoes_conta(void)
     struct path_usuario *Arquivo = malloc(sizeof(struct path_usuario));
     struct usuario *Usuario = malloc(sizeof(struct usuario));
 
-    strcpy(Arquivo->nome, "nome.bin");
-    strcpy(Arquivo->cpf, "cpf.bin");
-    strcpy(Arquivo->senha, "senha.bin");
+    strcpy(Arquivo->file, "user_data.bin");
 
     FILE *arquivo;
 
@@ -31,7 +29,7 @@ void acessar_informacoes_conta(void)
 
     char absolute_path_copy[strlen(absolute_path)];
     strcpy(absolute_path_copy, absolute_path);
-    strcat(absolute_path_copy, Arquivo->nome);
+    strcat(absolute_path_copy, Arquivo->file);
 
     struct usuario *objeto = malloc(sizeof(struct usuario));
 
@@ -39,48 +37,13 @@ void acessar_informacoes_conta(void)
 
     if (arquivo != NULL)
     {
-        fread(objeto->nome, sizeof(Usuario->nome), 1, arquivo);
+        fread(objeto, sizeof(struct usuario), 1, arquivo);
         fclose(arquivo);
-        memset(absolute_path_copy, 0, sizeof absolute_path_copy);
     }
     else
     {
         printf("Não foi possível abrir o arquivo nome.bin\n");
         exit(1);
-    }
-
-    strcpy(absolute_path_copy, absolute_path);
-    strcat(absolute_path_copy, Arquivo->cpf);
-
-    arquivo = fopen(absolute_path_copy, "rb");
-
-    if (arquivo != NULL)
-    {
-        fread(objeto->cpf, sizeof(Usuario->cpf), 1, arquivo);
-        fclose(arquivo);
-        memset(absolute_path_copy, 0, sizeof absolute_path_copy);
-    }
-    else
-    {
-        printf("Não foi possível abrir o arquivo cpf.bin\n");
-        exit(2);
-    }
-
-    strcpy(absolute_path_copy, absolute_path);
-    strcat(absolute_path_copy, Arquivo->senha);
-
-    arquivo = fopen(absolute_path_copy, "rb");
-
-    if (arquivo != NULL)
-    {
-        fread(objeto->senha, sizeof(Usuario->senha), 1, arquivo);
-        fclose(arquivo);
-        memset(absolute_path_copy, 0, sizeof absolute_path_copy);
-    }
-    else
-    {
-        printf("Não foi possível abrir o arquivo senha.bin\n");
-        exit(3);
     }
 
     show_header();
@@ -326,7 +289,6 @@ int gerar_registro_da_transacao(void)
 
 void adicionar_transacao(struct estrutura *transacao)
 {
-    // criar_modulo_de_transacoes();
     int registro_da_transacao = gerar_registro_da_transacao();
 
     char path_transacoes[] = "../data/usuario_0/transacoes/transacao_";
