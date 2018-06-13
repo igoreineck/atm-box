@@ -19,30 +19,39 @@ void show_main_header(void)
 }
 
 int main(void) {
-    
+
+    int system_status = 1;    
     int option = 0;
 
-    show_main_header();
-    printf("DIGITE UMA DAS OPÇÕES ABAIXO: \n");
-    printf("-------------------------------------------------------\n");
-    printf("Digite 1 - Para criar uma conta.\n");
-    printf("Digite 2 - Para acessar as informações da sua conta.\n");
-    printf("Digite 3 - Para acessar as opções de Administrador.\n");
-    printf("-------------------------------------------------------\n");
-    scanf("%d", &option);
+    while(system_status)
+    {
+        show_main_header();
+        printf("DIGITE UMA DAS OPÇÕES ABAIXO: \n");
+        printf("-------------------------------------------------------\n");
+        printf("Digite 1 - Para criar uma conta.\n");
+        printf("Digite 2 - Para acessar as informações da sua conta.\n");
+        printf("Digite 3 - Para acessar as opções de Administrador.\n");
+        printf("Digite 4 - Para Sair do sistema.\n");
+        printf("-------------------------------------------------------\n");
+        scanf("%d", &option);
 
-    __fpurge(stdin);
+        __fpurge(stdin);
 
-    if (option == 1)
-    {
-        new_user();
-    }
-    else if (option == 2) 
-    {
-        login();
-    }
-    else
-    {
-        opcoes_admin();
+        if (option == 1)
+        {
+            new_user();
+        }
+        else if (option == 2) 
+        {
+            login();
+        }
+        else if (option == 3) 
+        {
+            opcoes_admin();
+        }
+        else if  (option == 4) 
+        {
+           system_status = 0; 
+        }
     }
 }

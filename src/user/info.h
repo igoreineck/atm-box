@@ -1,10 +1,10 @@
 void show_header(void);
-void acessar_informacoes_monetarias(void);
-void acessar_informacoes_conta(void);
-void informacoes_usuario(void);
-void saldo_usuario(void);
-void deposito_usuario(void);
-void saque_usuario(void);
+void acessar_informacoes_monetarias(char * path);
+void acessar_informacoes_conta(char * path);
+void informacoes_usuario(char * path);
+void saldo_usuario(char * path);
+void deposito_usuario(char * path);
+void saque_usuario(char * path);
 void abrir_arquivo(char modo[]);
 
 struct estrutura

@@ -16,8 +16,13 @@ void show_header(void)
     printf("888888  88    .88b  88       `Y88P'  \n\n");
 }
 
-void acessar_informacoes_conta(void) 
+void acessar_informacoes_conta(char * path) 
 {
+    char pathCopy[strlen(path)];
+    char absolute_path[100];
+    
+    strcpy(pathCopy, path);
+
     struct path_usuario *Arquivo = malloc(sizeof(struct path_usuario));
     struct usuario *Usuario = malloc(sizeof(struct usuario));
 
@@ -25,9 +30,9 @@ void acessar_informacoes_conta(void)
 
     FILE *arquivo;
 
-    char absolute_path[] = "../data/usuario_0/";
+    strcpy(absolute_path, pathCopy);
 
-    char absolute_path_copy[strlen(absolute_path)];
+    char absolute_path_copy[100];
     strcpy(absolute_path_copy, absolute_path);
     strcat(absolute_path_copy, Arquivo->file);
 
@@ -60,37 +65,60 @@ void acessar_informacoes_conta(void)
     free(Arquivo);
     free(Usuario);
     free(objeto);
+    
 }
 
-void informacoes_usuario(void) 
+void informacoes_usuario(char * path) 
 {
-    int opcao = 0;
-
-    show_header();
+    char pathCopy[strlen(path)];
+    strcpy(pathCopy, path);
+    int status_user = 1,
+        did_action = 0;
     
-    printf("\nDigite uma das opções abaixo: \n");
-    printf("1 - Informações da Conta \n");
-    printf("2 - Informações monetárias da Conta \n");
-    // printf("3 - Editar conta") -> Adicionar posteriormente
-    scanf("%d", &opcao);
-
-    __fpurge(stdin);
-
-    if (opcao == 1) 
+    while(status_user)
     {
-        acessar_informacoes_conta();
-    } 
-    else if (opcao == 2)
-    {
-        acessar_informacoes_monetarias();
-        // criar_modulo_de_transacoes();
+        if(did_action)
+        {
+            printf("\ndigite qualquer tecla para voltar ao menu\n");
+            getchar();
+        }
+        did_action = 1;
+        int opcao = 0;
+
+        show_header();
+    
+        printf("\nDigite uma das opções abaixo: \n");
+        printf("1 - Informações da Conta \n");
+        printf("2 - Informações monetárias da Conta \n");
+        printf("3 - Deslogar \n");
+        // printf("3 - Editar conta") -> Adicionar posteriormente
+        scanf("%d", &opcao);
+
+        __fpurge(stdin);
+
+        if (opcao == 1) 
+        {
+            acessar_informacoes_conta(pathCopy);
+        } 
+        else if (opcao == 2)
+        {
+            acessar_informacoes_monetarias(pathCopy);
+            // criar_modulo_de_transacoes();
+        }
+        else if (opcao == 3)
+        {
+            status_user = 0;
+        }
     }
 }
 
-void acessar_informacoes_monetarias(void) 
+void acessar_informacoes_monetarias(char * path) 
 {
     int opcao = 0;
-
+    char pathCopy[strlen(path)];
+    
+    strcpy(pathCopy, path);
+    
     show_header();
     printf("\nDigite uma op��o abaixo: \n");
     printf("1 - Saldo \n");
@@ -103,29 +131,33 @@ void acessar_informacoes_monetarias(void)
 
     if (opcao == 1) 
     {
-        saldo_usuario();
+        saldo_usuario(pathCopy);
     }
     else if (opcao == 2)
     {
-        deposito_usuario();
+        deposito_usuario(pathCopy);
     }
     else if (opcao == 3)
     {
-        saque_usuario();
+        saque_usuario(pathCopy);
     }
     else 
     {
         // modificar_extrato_da_conta();
-        acessar_extrato_da_conta();
+        acessar_extrato_da_conta(pathCopy);
     }
 }
 
-void saldo_usuario(void)
+void saldo_usuario(char * path)
 {
     FILE *file;
-    float valor_saldo;
+    float valor_saldo;    
+    char pathCopy[strlen(path)];
+    
+    strcpy(pathCopy, path);
+    strcat(pathCopy, "caixa.bin");
 
-    if ((file = fopen("../data/usuario_0/caixa.bin", "rb")) == NULL)
+    if ((file = fopen(pathCopy, "rb")) == NULL)
     {
         printf("Erro ao abrir o arquivo.\n");
         exit(1);
@@ -142,23 +174,30 @@ void saldo_usuario(void)
     printf("Saldo: %0.2f \n", valor_saldo);
 }
 
-void deposito_usuario(void)
+void deposito_usuario(char * path)
 {
     show_header();
 
     FILE *file;
     float valor_para_deposito = 0;
     float saldo_existente = 0;
-    char path_deposito[] = "../data/usuario_0/caixa.bin";
+    char pathCopy[strlen(path)];
+    char pathCopyAlso[strlen(path)];
+    
+    strcpy(pathCopy, path);
+    strcpy(pathCopyAlso, path);
+
+    strcat(pathCopy, "caixa.bin");
+
 
     printf("\nDigite um valor para deposito: ");
     scanf("%f", &valor_para_deposito);
 
-    file = fopen(path_deposito, "rb");
+    file = fopen(pathCopy, "rb");
 
     if (file == NULL)
     {
-        file = fopen(path_deposito, "w+b");
+        file = fopen(pathCopy, "w+b");
 
         fwrite(&valor_para_deposito, sizeof(float), 1, file);
     }
@@ -166,7 +205,7 @@ void deposito_usuario(void)
     {
         fread(&saldo_existente, sizeof(float), 1, file);
 
-        file = fopen(path_deposito, "w+b");
+        file = fopen(pathCopy, "w+b");
 
         valor_para_deposito = valor_para_deposito + saldo_existente;
 
@@ -182,23 +221,29 @@ void deposito_usuario(void)
     depositar->valor = valor_para_deposito;
     strcpy(depositar->data, "12/06/2018");
 
-    adicionar_transacao(depositar);
+    adicionar_transacao(depositar, pathCopyAlso);
 
     free(depositar);
 }
 
-void saque_usuario(void)
+void saque_usuario(char * path)
 {
     show_header();
 
     FILE *file;
     float valor_para_saque;
     float saldo;
+    char pathCopy[strlen(path)];
+    char pathCopyAlso[strlen(path)];
+    
+    strcpy(pathCopy, path);
+    strcpy(pathCopyAlso, path);
+    strcat(pathCopy, "caixa.bin");
 
     printf("\nDigite um valor para saque: ");
     scanf("%f", &valor_para_saque);
 
-    if ((file = fopen("../data/usuario_0/caixa.bin", "rb")) == NULL)
+    if ((file = fopen(pathCopy, "rb")) == NULL)
     {
         printf("Erro na abertura do arquivo.\n");
     }
@@ -228,7 +273,7 @@ void saque_usuario(void)
         printf("\nSeu saldo está negativo. Não será possível realizar um saque.\n");
     }
 
-    if ((file = fopen("../data/usuario_0/caixa.bin", "wb")) == NULL)
+    if ((file = fopen(pathCopy, "wb")) == NULL)
     {
         printf("Erro na abertura do arquivo.\n");
     }
@@ -249,23 +294,25 @@ void saque_usuario(void)
     sacar->valor = valor_para_saque;
     strcpy(sacar->data, "12/06/2018");
 
-    adicionar_transacao(sacar);
+    adicionar_transacao(sacar, pathCopyAlso);
 
     free(sacar);
 }
 
-int gerar_registro_da_transacao(void)
+int gerar_registro_da_transacao(char * path)
 {
     FILE *arquivo;
     int contador;
+    char pathCopy[100];
+    
+    strcpy(pathCopy, path);
+    strcat(pathCopy, "backlog_transacoes/log_transacoes.bin");
 
-    char path_transacoes[] = "../data/usuario_0/backlog_transacoes/log_transacoes.bin";
-
-    arquivo = fopen(path_transacoes, "rb");
+    arquivo = fopen(pathCopy, "rb");
 
     if (arquivo == NULL)
     {
-        arquivo = fopen(path_transacoes, "w+b");
+        arquivo = fopen(pathCopy, "w+b");
 
         contador = 1;
 
@@ -277,7 +324,7 @@ int gerar_registro_da_transacao(void)
 
         contador++;
 
-        arquivo = fopen(path_transacoes, "w+b");
+        arquivo = fopen(pathCopy, "w+b");
 
         fwrite(&contador, sizeof(int), 1, arquivo);
     }
@@ -287,25 +334,29 @@ int gerar_registro_da_transacao(void)
     return contador;
 }
 
-void adicionar_transacao(struct estrutura *transacao)
+void adicionar_transacao(struct estrutura *transacao, char * path)
 {
-    int registro_da_transacao = gerar_registro_da_transacao();
+    char pathCopy[100];
 
-    char path_transacoes[] = "../data/usuario_0/transacoes/transacao_";
+    strcpy(pathCopy, path);
+
+    int registro_da_transacao = gerar_registro_da_transacao(pathCopy);
+
+    strcat(pathCopy, "transacoes/transacao_");
 
     char aux[sizeof(registro_da_transacao)];
     snprintf(aux, sizeof(registro_da_transacao), "%d", registro_da_transacao);
 
-    strcat(path_transacoes, aux);
-    strcat(path_transacoes, ".bin");
+    strcat(pathCopy, aux);
+    strcat(pathCopy, ".bin");
 
     FILE *arquivo;
 
-    arquivo = fopen(path_transacoes, "rb");
+    arquivo = fopen(pathCopy, "rb");
 
     if (arquivo == NULL)
     {
-        arquivo = fopen(path_transacoes, "w+b");
+        arquivo = fopen(pathCopy, "w+b");
 
         fwrite(transacao, sizeof(struct estrutura), 1, arquivo);
     }
@@ -313,16 +364,19 @@ void adicionar_transacao(struct estrutura *transacao)
     fclose(arquivo);
 }
 
-void acessar_extrato_da_conta()
+void acessar_extrato_da_conta(char * path)
 {
     struct dirent *entry;
 
-    char path_transacao[] = "../data/usuario_0/transacoes/";
-    char copy_path_transacao[strlen(path_transacao)];
+    char pathCopy[100];
+    char copy_path_transacao[100];
+    
+    strcpy(pathCopy, path);
+    strcat(pathCopy, "transacoes/");
 
     FILE *arquivo;
 
-    DIR *diretorio = opendir("../data/usuario_0/transacoes");
+    DIR *diretorio = opendir(pathCopy);
 
     if (diretorio == NULL)
     {
@@ -336,7 +390,7 @@ void acessar_extrato_da_conta()
         {
             struct estrutura *objeto = malloc(sizeof(struct estrutura));
             
-            strcpy(copy_path_transacao, path_transacao);
+            strcpy(copy_path_transacao, pathCopy);
             strcat(copy_path_transacao, entry->d_name);
 
             arquivo = fopen(copy_path_transacao, "rb");
