@@ -61,8 +61,24 @@ int login(void)
         if (strcmp(object->cpf, cpf) == 0 && strcmp(object->password, senha) == 0)
         {
             status = 1;
+
+            FILE *file_backlog;
+
+            file_backlog = fopen("../backlog/log_users.bin", "wb");
+            fwrite(&root_path, sizeof(char), 1, file);
+
+            if(file_backlog == NULL)
+            {
+                printf("Erro ao abrir o arquivo.\n");
+                exit(1);
+            }
+
+            fclose(file_backlog);
+
             informacoes_usuario(root_path);
         }
+
+        fclose(file);
     }
     if(!status)
     {

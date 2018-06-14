@@ -224,6 +224,7 @@ void deposito_usuario(char * path)
     adicionar_transacao(depositar, pathCopyAlso);
 
     free(depositar);
+    getchar();
 }
 
 void saque_usuario(char * path)
@@ -297,6 +298,7 @@ void saque_usuario(char * path)
     adicionar_transacao(sacar, pathCopyAlso);
 
     free(sacar);
+    getchar();
 }
 
 int gerar_registro_da_transacao(char * path)

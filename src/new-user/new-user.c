@@ -124,8 +124,6 @@ char *gerarCaminho(int numeroUsuario)
 
 	mkdir(caminho, 0777);
 
-	strcat(caminho, "/user_data.bin");
-
 	char *buffer = malloc(sizeof(char) * strlen(caminho));
 
 	for (int i = 0; i < strlen(caminho); ++i) 
@@ -138,20 +136,29 @@ char *gerarCaminho(int numeroUsuario)
 
 void salvarUsuario(const char *path, char *cpf, char *nome, char *senha)
 {
+	float default_value = 0;
 
-    char pathCopy[strlen(path)];
-    strcpy(pathCopy, path);
+    char pathCopy[100],
+		 caixa[100];
+
+	strcpy(pathCopy, path);
+	strcpy(caixa, pathCopy);
+
+	strcat(caixa, "/caixa.bin");
+	strcat(pathCopy, "/user_data.bin");
 
 	struct user *object = malloc(sizeof(struct user));
     strcpy(object->name , nome);
     strcpy(object->cpf , cpf);
     strcpy(object->password , senha);
 
+	FILE * file_caixa = fopen(caixa, "wb");
     FILE * file= fopen(pathCopy, "wb");
 
     if (file != NULL) 
     {
         fwrite(object, sizeof(struct user), 1, file);
+		fwrite(&default_value, sizeof(float), 1, file_caixa);
     }
 	else
 	{
@@ -160,6 +167,8 @@ void salvarUsuario(const char *path, char *cpf, char *nome, char *senha)
 	}
 
     fclose(file);
+	fclose(file_caixa);
+
 }
 
 void criar_modulo_de_transacoes(int numero_usuario)

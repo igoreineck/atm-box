@@ -20,38 +20,60 @@ void show_header_admin(void)
 
 void opcoes_admin(void)
 {
-    backlog_usuarios();
-    show_header_admin();
 
-    int opcao = 0;
+    int status_user = 1,  
+        did_action = 0;
+    
+    while(status_user)
+    {
+        if(did_action)
+        {
+            printf("\ndigite qualquer tecla para voltar ao menu\n");
+            getchar();
+            getchar();
 
-    printf("\nDigite uma das opções abaixo: \n");
-    printf("1 - Quantidade de clientes cadastrados.\n");
-    printf("2 - Quantidade de clientes sem débito.\n");
-    printf("3 - Quantidade de clientes com débito.\n");
-    printf("4 - Valor mais baixo em conta.\n");
-    printf("5 - Valor mais alto em conta.\n");
-    scanf("%d", &opcao);
 
-    if (opcao == 1)
-    {
-        quantidade_clientes();
-    }
-    else if (opcao == 2)
-    {
-        quantidade_clientes_sem_debito();
-    }
-    else if (opcao == 3)
-    {
-        quantidade_clientes_com_debito();
-    }
-    else if (opcao == 4)
-    {
-        valor_mais_baixo_em_conta();
-    }
-    else
-    {
-        valor_mais_alto_em_conta();
+        }
+        did_action = 1;
+        
+        backlog_usuarios();
+        show_header_admin();
+        
+        int opcao = 0;
+
+        printf("\nDigite uma das opções abaixo: \n");
+        printf("1 - Quantidade de clientes cadastrados.\n");
+        printf("2 - Quantidade de clientes sem débito.\n");
+        printf("3 - Quantidade de clientes com débito.\n");
+        printf("4 - Valor mais baixo em conta.\n");
+        printf("5 - Valor mais alto em conta.\n");
+         printf("6 - Deslogar.\n");
+        scanf("%d", &opcao);
+
+        if (opcao == 1)
+        {
+            quantidade_clientes();
+        }
+        else if (opcao == 2)
+        {
+            quantidade_clientes_sem_debito();
+        }
+        else if (opcao == 3)
+        {
+            quantidade_clientes_com_debito();
+        }
+        else if (opcao == 4)
+        {
+            valor_mais_baixo_em_conta();
+        }
+        else if (opcao == 5)
+        {
+            valor_mais_alto_em_conta();
+        }
+        else if (opcao == 6)
+        {
+            status_user = 0;
+        }
     }
 }
 
