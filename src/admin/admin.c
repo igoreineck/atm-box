@@ -20,7 +20,6 @@ void show_header_admin(void)
 
 void opcoes_admin(void)
 {
-
     int status_user = 1,  
         did_action = 0;
     
@@ -31,9 +30,8 @@ void opcoes_admin(void)
             printf("\ndigite qualquer tecla para voltar ao menu\n");
             getchar();
             getchar();
-
-
         }
+        
         did_action = 1;
         
         backlog_usuarios();
@@ -47,7 +45,7 @@ void opcoes_admin(void)
         printf("3 - Quantidade de clientes com débito.\n");
         printf("4 - Valor mais baixo em conta.\n");
         printf("5 - Valor mais alto em conta.\n");
-         printf("6 - Deslogar.\n");
+        printf("6 - Deslogar.\n");
         scanf("%d", &opcao);
 
         if (opcao == 1)

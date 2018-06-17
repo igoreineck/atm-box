@@ -3,6 +3,7 @@
 #include <string.h>
 #include <dirent.h>
 #include "info.h"
+#include <time.h>
 
 void show_header(void) 
 {
@@ -64,8 +65,7 @@ void acessar_informacoes_conta(char * path)
 
     free(Arquivo);
     free(Usuario);
-    free(objeto);
-    
+    free(objeto); 
 }
 
 void informacoes_usuario(char * path) 
@@ -103,7 +103,6 @@ void informacoes_usuario(char * path)
         else if (opcao == 2)
         {
             acessar_informacoes_monetarias(pathCopy);
-            // criar_modulo_de_transacoes();
         }
         else if (opcao == 3)
         {
@@ -148,14 +147,42 @@ void acessar_informacoes_monetarias(char * path)
     }
 }
 
+char *exibir_data(void)
+{
+    time_t current_time;
+    char *c_time_string;
+
+    current_time = time(NULL);
+
+    if (current_time == ((time_t)-1))
+    {
+        (void) fprintf(stderr, "Failure to obtain the current time.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    c_time_string = ctime(&current_time);
+
+    if (c_time_string == NULL)
+    {
+        (void) fprintf(stderr, "Failure to convert the current time.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return c_time_string;
+}
+
 void saldo_usuario(char * path)
 {
+    show_header();
+
     FILE *file;
     float valor_saldo;    
-    char pathCopy[strlen(path)];
+    char pathCopy[strlen(path)+15];
     
     strcpy(pathCopy, path);
     strcat(pathCopy, "caixa.bin");
+
+    printf("Url: %s\n", pathCopy);
 
     if ((file = fopen(pathCopy, "rb")) == NULL)
     {
@@ -170,7 +197,6 @@ void saldo_usuario(char * path)
 
     fclose(file);
 
-    show_header();
     printf("Saldo: %0.2f \n", valor_saldo);
 }
 
@@ -183,6 +209,8 @@ void deposito_usuario(char * path)
     float saldo_existente = 0;
     char pathCopy[strlen(path)];
     char pathCopyAlso[strlen(path)];
+    const char *data_atual; 
+    data_atual = exibir_data();
     
     strcpy(pathCopy, path);
     strcpy(pathCopyAlso, path);
@@ -217,9 +245,9 @@ void deposito_usuario(char * path)
     printf("\nDepósito efetuado com sucesso!\n");
 
     struct estrutura *depositar = malloc(sizeof(struct estrutura));
-    strcpy(depositar->tipo, "D");
+    strcpy(depositar->tipo, "Deposito");
     depositar->valor = valor_para_deposito;
-    strcpy(depositar->data, "12/06/2018");
+    strcpy(depositar->data, data_atual);
 
     adicionar_transacao(depositar, pathCopyAlso);
 
@@ -236,7 +264,9 @@ void saque_usuario(char * path)
     float saldo;
     char pathCopy[strlen(path)];
     char pathCopyAlso[strlen(path)];
-    
+    const char *data_atual;
+    data_atual = exibir_data();
+
     strcpy(pathCopy, path);
     strcpy(pathCopyAlso, path);
     strcat(pathCopy, "caixa.bin");
@@ -291,9 +321,9 @@ void saque_usuario(char * path)
 
     struct estrutura *sacar = malloc(sizeof(struct estrutura));
 
-    strcpy(sacar->tipo, "S");
+    strcpy(sacar->tipo, "Saque");
     sacar->valor = valor_para_saque;
-    strcpy(sacar->data, "12/06/2018");
+    strcpy(sacar->data, data_atual);
 
     adicionar_transacao(sacar, pathCopyAlso);
 

@@ -6,12 +6,13 @@ void saldo_usuario(char * path);
 void deposito_usuario(char * path);
 void saque_usuario(char * path);
 void abrir_arquivo(char modo[]);
+char *exibir_data(void);
 
 struct estrutura
 {
-    char tipo[2];
+    char tipo[15];
     float valor;
-    char data[11];
+    char data[30];
 };
 
 struct path_usuario 
