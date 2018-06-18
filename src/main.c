@@ -29,9 +29,8 @@ int main(void) {
         printf("DIGITE UMA DAS OPÇÕES ABAIXO: \n");
         printf("-------------------------------------------------------\n");
         printf("Digite 1 - Para criar uma conta.\n");
-        printf("Digite 2 - Para acessar as informações da sua conta.\n");
-        printf("Digite 3 - Para acessar as opções de Administrador.\n");
-        printf("Digite 4 - Para Sair do sistema.\n");
+        printf("Digite 2 - Para efetuar o login no sistema.\n");
+        printf("Digite 3 - Para Sair do sistema.\n");
         printf("-------------------------------------------------------\n");
         scanf("%d", &option);
 
@@ -45,11 +44,7 @@ int main(void) {
         {
             login();
         }
-        else if (option == 3) 
-        {
-            opcoes_admin();
-        }
-        else if  (option == 4) 
+        else if  (option == 3) 
         {
            system_status = 0; 
         }

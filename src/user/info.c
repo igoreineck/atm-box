@@ -177,7 +177,7 @@ void saldo_usuario(char * path)
 
     FILE *file;
     float valor_saldo;    
-    char pathCopy[strlen(path)+15];
+    char pathCopy[100];
     
     strcpy(pathCopy, path);
     strcat(pathCopy, "caixa.bin");
@@ -207,8 +207,8 @@ void deposito_usuario(char * path)
     FILE *file;
     float valor_para_deposito = 0;
     float saldo_existente = 0;
-    char pathCopy[strlen(path)];
-    char pathCopyAlso[strlen(path)];
+    char pathCopy[100];
+    char pathCopyAlso[100];
     const char *data_atual; 
     data_atual = exibir_data();
     
@@ -262,8 +262,8 @@ void saque_usuario(char * path)
     FILE *file;
     float valor_para_saque;
     float saldo;
-    char pathCopy[strlen(path)];
-    char pathCopyAlso[strlen(path)];
+    char pathCopy[100];
+    char pathCopyAlso[100];
     const char *data_atual;
     data_atual = exibir_data();
 

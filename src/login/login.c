@@ -47,50 +47,57 @@ int login(void)
     fread(&qnt_usuario, 1 , sizeof(int), file_qnt_user);
     fclose(file_qnt_user);
 
-    for (i = 0; i < qnt_usuario; i++)
+    if(strcmp("admin\n", cpf) == 0 && strcmp("admin\n", senha) == 0)
     {
-        snprintf(i_str, 5, "%d", i);
-        strcpy(path,"../data/usuario_");
-        strcat(path, i_str);
-        
-        strcpy(root_path, path);
-        strcat(root_path, "/");
-          
-        strcat(path, "/user_data.bin");
-
-        struct user *object = malloc(sizeof(struct user));
-
-        FILE * file= fopen(path, "rb");
-
-        if (file != NULL) 
+        status = 1;
+        opcoes_admin();
+    }
+    else
+    {
+        for (i = 0; i < qnt_usuario; i++)
         {
-            fread(object, sizeof(struct user), 1, file);
-            fclose(file);
-        }
+            snprintf(i_str, 5, "%d", i);
+            strcpy(path,"../data/usuario_");
+            strcat(path, i_str);
+            
+            strcpy(root_path, path);
+            strcat(root_path, "/");
+            
+            strcat(path, "/user_data.bin");
 
-        if (strcmp(object->cpf, cpf) == 0 && strcmp(object->password, senha) == 0)
-        {
-            status = 1;
+            struct user *object = malloc(sizeof(struct user));
 
-            FILE *file_backlog;
+            FILE * file= fopen(path, "rb");
 
-            file_backlog = fopen("../backlog/log_users.bin", "wb");
-            fwrite(&root_path, sizeof(char), 1, file);
-
-            if(file_backlog == NULL)
+            if (file != NULL) 
             {
-                printf("Erro ao abrir o arquivo.\n");
-                exit(1);
+                fread(object, sizeof(struct user), 1, file);
+                fclose(file);
             }
 
-            fclose(file_backlog);
+            if (strcmp(object->cpf, cpf) == 0 && strcmp(object->password, senha) == 0)
+            {
+                status = 1;
 
-            informacoes_usuario(root_path);
+                FILE *file_backlog;
+
+                file_backlog = fopen("../backlog/log_users.bin", "wb");
+                fwrite(&root_path, sizeof(char), 1, file);
+
+                if(file_backlog == NULL)
+                {
+                    printf("Erro ao abrir o arquivo.\n");
+                    exit(1);
+                }
+
+                fclose(file_backlog);
+
+                informacoes_usuario(root_path);
+            }
+
+            fclose(file);
         }
-
-        fclose(file);
     }
-    
     if(!status)
     {
         printf("CPF ou senha inválidos\n");
