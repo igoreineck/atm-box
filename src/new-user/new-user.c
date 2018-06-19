@@ -168,7 +168,6 @@ void salvarUsuario(const char *path, char *cpf, char *nome, char *senha)
 
     fclose(file);
 	fclose(file_caixa);
-
 }
 
 void criar_modulo_de_transacoes(int numero_usuario)

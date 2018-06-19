@@ -17,7 +17,7 @@ void show_header(void)
     printf("888888  88    .88b  88       `Y88P'  \n\n");
 }
 
-void acessar_informacoes_conta(char * path) 
+void acessar_informacoes_conta(const char * path) 
 {
     char pathCopy[strlen(path)];
     char absolute_path[100];
@@ -48,7 +48,7 @@ void acessar_informacoes_conta(char * path)
     }
     else
     {
-        printf("Não foi possível abrir o arquivo nome.bin\n");
+        printf("Não foi possível abrir o arquivo.\n");
         exit(1);
     }
 
@@ -68,7 +68,7 @@ void acessar_informacoes_conta(char * path)
     free(objeto); 
 }
 
-void informacoes_usuario(char * path) 
+void informacoes_usuario(const char * path) 
 {
     char pathCopy[strlen(path)];
     strcpy(pathCopy, path);
@@ -111,7 +111,7 @@ void informacoes_usuario(char * path)
     }
 }
 
-void acessar_informacoes_monetarias(char * path) 
+void acessar_informacoes_monetarias(const char * path) 
 {
     int opcao = 0;
     char pathCopy[strlen(path)];
@@ -171,18 +171,16 @@ char *exibir_data(void)
     return c_time_string;
 }
 
-void saldo_usuario(char * path)
+void saldo_usuario(const char * path)
 {
     show_header();
 
     FILE *file;
     float valor_saldo;    
-    char pathCopy[strlen(path)+15];
+    char pathCopy[100];
     
     strcpy(pathCopy, path);
     strcat(pathCopy, "caixa.bin");
-
-    printf("Url: %s\n", pathCopy);
 
     if ((file = fopen(pathCopy, "rb")) == NULL)
     {
@@ -200,15 +198,15 @@ void saldo_usuario(char * path)
     printf("Saldo: %0.2f \n", valor_saldo);
 }
 
-void deposito_usuario(char * path)
+void deposito_usuario(const char * path)
 {
     show_header();
 
     FILE *file;
     float valor_para_deposito = 0;
     float saldo_existente = 0;
-    char pathCopy[strlen(path)];
-    char pathCopyAlso[strlen(path)];
+    char pathCopy[100];
+    char pathCopyAlso[100];
     const char *data_atual; 
     data_atual = exibir_data();
     
@@ -216,7 +214,6 @@ void deposito_usuario(char * path)
     strcpy(pathCopyAlso, path);
 
     strcat(pathCopy, "caixa.bin");
-
 
     printf("\nDigite um valor para deposito: ");
     scanf("%f", &valor_para_deposito);
@@ -255,15 +252,15 @@ void deposito_usuario(char * path)
     getchar();
 }
 
-void saque_usuario(char * path)
+void saque_usuario(const char * path)
 {
     show_header();
 
     FILE *file;
     float valor_para_saque;
     float saldo;
-    char pathCopy[strlen(path)];
-    char pathCopyAlso[strlen(path)];
+    char pathCopy[100];
+    char pathCopyAlso[100];
     const char *data_atual;
     data_atual = exibir_data();
 
@@ -331,7 +328,7 @@ void saque_usuario(char * path)
     getchar();
 }
 
-int gerar_registro_da_transacao(char * path)
+int gerar_registro_da_transacao(const char * path)
 {
     FILE *arquivo;
     int contador;
@@ -366,7 +363,7 @@ int gerar_registro_da_transacao(char * path)
     return contador;
 }
 
-void adicionar_transacao(struct estrutura *transacao, char * path)
+void adicionar_transacao(struct estrutura *transacao, const char * path)
 {
     char pathCopy[100];
 
@@ -396,7 +393,7 @@ void adicionar_transacao(struct estrutura *transacao, char * path)
     fclose(arquivo);
 }
 
-void acessar_extrato_da_conta(char * path)
+void acessar_extrato_da_conta(const char * path)
 {
     struct dirent *entry;
 
@@ -432,8 +429,8 @@ void acessar_extrato_da_conta(char * path)
                 fread(objeto, sizeof(struct estrutura), 1, arquivo);
 
                 printf("[Tipo da transação: %s | ", objeto->tipo);
-                printf("Valor da transação: %0.2f | ", objeto->valor);
-                printf("Data da transação: %s]\n", objeto->data);
+                printf("Valor: %0.2f | ", objeto->valor);
+                printf("Data: %s]\n", objeto->data);
             }
 
             memset(copy_path_transacao, 0, sizeof copy_path_transacao);

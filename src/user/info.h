@@ -1,10 +1,10 @@
 void show_header(void);
-void acessar_informacoes_monetarias(char * path);
-void acessar_informacoes_conta(char * path);
-void informacoes_usuario(char * path);
-void saldo_usuario(char * path);
-void deposito_usuario(char * path);
-void saque_usuario(char * path);
+void acessar_informacoes_monetarias(const char * path);
+void acessar_informacoes_conta(const char * path);
+void informacoes_usuario(const char * path);
+void saldo_usuario(const char * path);
+void deposito_usuario(const char * path);
+void saque_usuario(const char * path);
 void abrir_arquivo(char modo[]);
 char *exibir_data(void);
 

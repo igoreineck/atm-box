@@ -41,8 +41,8 @@ void opcoes_admin(void)
 
         printf("\nDigite uma das opções abaixo: \n");
         printf("1 - Quantidade de clientes cadastrados.\n");
-        printf("2 - Quantidade de clientes sem débito.\n");
-        printf("3 - Quantidade de clientes com débito.\n");
+        printf("2 - Quantidade de clientes com débito.\n");
+        printf("3 - Quantidade de clientes sem débito.\n");
         printf("4 - Valor mais baixo em conta.\n");
         printf("5 - Valor mais alto em conta.\n");
         printf("6 - Deslogar.\n");

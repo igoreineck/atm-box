@@ -20,12 +20,12 @@ int login(void)
 {
     show_header_login();
 
-    int i = 0, 
-        qnt_usuario,
+    int qnt_usuario,
         status = 0;
 
     char i_str[5],
          path[40],
+         root_path_bckp[40],
          root_path[40], 
          cpf[12], 
          senha[255];
@@ -47,25 +47,29 @@ int login(void)
     fread(&qnt_usuario, 1 , sizeof(int), file_qnt_user);
     fclose(file_qnt_user);
 
-    for (i = 0; i < qnt_usuario; i++)
+    for (int i = 0; i <= qnt_usuario; i++)
     {
         snprintf(i_str, 5, "%d", i);
         strcpy(path,"../data/usuario_");
         strcat(path, i_str);
+        strcat(path, "/");
+
+        strcpy(root_path_bckp, path);
         
-        strcpy(root_path, path);
-        strcat(root_path, "/");
-          
-        strcat(path, "/user_data.bin");
+        strcat(path, "/user_data.bin");          
 
         struct user *object = malloc(sizeof(struct user));
 
-        FILE * file= fopen(path, "rb");
+        FILE *file = fopen(path, "rb");
 
         if (file != NULL) 
         {
             fread(object, sizeof(struct user), 1, file);
-            fclose(file);
+        } 
+        else 
+        {
+            printf("Erro ao abrir o arquivo de informações do usuario %d\n", i);
+            exit(1);
         }
 
         if (strcmp(object->cpf, cpf) == 0 && strcmp(object->password, senha) == 0)
@@ -74,8 +78,8 @@ int login(void)
 
             FILE *file_backlog;
 
-            file_backlog = fopen("../backlog/log_users.bin", "wb");
-            fwrite(&root_path, sizeof(char), 1, file);
+            file_backlog = fopen("../backlog/logged_user.bin", "w+r");
+            fwrite(&path, sizeof(char), 1, file);
 
             if(file_backlog == NULL)
             {
@@ -85,8 +89,11 @@ int login(void)
 
             fclose(file_backlog);
 
-            informacoes_usuario(root_path);
+            informacoes_usuario(root_path_bckp);
         }
+
+        memset(path, 0, sizeof path);
+        memset(root_path_bckp, 0, sizeof root_path_bckp);
 
         fclose(file);
     }
