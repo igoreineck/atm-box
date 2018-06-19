@@ -58,9 +58,9 @@ int login(void)
         
         strcat(path, "/user_data.bin");          
 
-        struct user *object = malloc(sizeof(struct user));
-
         FILE *file = fopen(path, "rb");
+
+        struct user *object = malloc(sizeof(struct user));
 
         if (file != NULL) 
         {
@@ -97,7 +97,7 @@ int login(void)
 
         fclose(file);
     }
-    
+
     if(!status)
     {
         printf("CPF ou senha inválidos\n");
