@@ -28,13 +28,11 @@ int cpf_verification(char * cpf)
     	digito2, 
     	valor; 
 
-    //Efetua a conversao de array de char para um array de int.  
     for (i = 0; i < 11; i++) 
     {  
         icpf[i] = cpf[i] - 48;  
     }  
  
-    //PRIMEIRO DIGITO.  
     for (i = 0; i < 9; i++) {  
         somador += icpf[i] * (10 - i);  
     }  
@@ -49,7 +47,6 @@ int cpf_verification(char * cpf)
         digito1 = 11 - result1;  
     }  
  
-    //SEGUNDO DIGITO.  
     somador = 0;  
  
     for (i = 0; i < 10; i++) 
@@ -69,7 +66,6 @@ int cpf_verification(char * cpf)
         digito2 = 11 - result2;  
     }  
  
-    //RESULTADOS DA VALIDACAO.  
     if ((digito1 == icpf[9]) && (digito2 == icpf[10])) 
     {  
         return 1;  

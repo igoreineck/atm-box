@@ -54,11 +54,11 @@ void opcoes_admin(void)
         }
         else if (opcao == 2)
         {
-            quantidade_clientes_sem_debito();
+            quantidade_clientes_com_debito();
         }
         else if (opcao == 3)
         {
-            quantidade_clientes_com_debito();
+            quantidade_clientes_sem_debito();
         }
         else if (opcao == 4)
         {
@@ -144,64 +144,10 @@ void quantidade_clientes(void)
     printf("Quantidade de clientes cadastrados: %d\n", quantidade_clientes);
 }
 
-void quantidade_clientes_sem_debito(void)
-{
-    show_header_admin();
-
-    int quantidade_pastas = varredura_de_pastas();
-    int quantidade_clientes_sem_debito = 0;
-
-    struct dirent *info_user;
-
-    FILE *archive;
-    DIR *directory = opendir("../data");
-
-    if (directory == NULL)
-    {
-        printf("Não é possível abrir o diretório.\n");
-        exit(1);
-    }
-
-    while ((info_user = readdir(directory)) != NULL)
-    {
-        if (strcmp(info_user->d_name, ".") != 0 && strcmp(info_user->d_name, "..") != 0)
-        {
-            float valor_em_conta = 0;
-            char path_user[] = "../data/";
-            strcat(path_user, info_user->d_name);
-            strcat(path_user, "/caixa.bin");
-
-            if ((archive = fopen(path_user, "rb")) == NULL)
-            {
-                printf("Erro no arquivo %s\n", strerror(errno));
-                exit(1);
-            }
-
-            if (fread(&valor_em_conta, sizeof(float), 1, archive) != 1)
-            {
-                printf("Erro na leitura do arquivo.\n");
-                fclose(archive);
-                continue;
-            }
-
-            if (valor_em_conta <= 0)
-            {
-                quantidade_clientes_sem_debito++;
-            }
-
-            fclose(archive);
-        }
-    }
-    
-    closedir(directory);
-
-    printf("A quantidade de clientes sem débito é de %d.\n", quantidade_clientes_sem_debito);
-}
-
 void quantidade_clientes_com_debito(void)
 {
     show_header_admin();
-    
+
     int quantidade_pastas = varredura_de_pastas();
     int quantidade_clientes_com_debito = 0;
 
@@ -238,7 +184,7 @@ void quantidade_clientes_com_debito(void)
                 continue;
             }
 
-            if (valor_em_conta > 0)
+            if (valor_em_conta < 0)
             {
                 quantidade_clientes_com_debito++;
             }
@@ -250,6 +196,60 @@ void quantidade_clientes_com_debito(void)
     closedir(directory);
 
     printf("A quantidade de clientes com débito é de %d.\n", quantidade_clientes_com_debito);
+}
+
+void quantidade_clientes_sem_debito(void)
+{
+    show_header_admin();
+    
+    int quantidade_pastas = varredura_de_pastas();
+    int quantidade_clientes_sem_debito = 0;
+
+    struct dirent *info_user;
+
+    FILE *archive;
+    DIR *directory = opendir("../data");
+
+    if (directory == NULL)
+    {
+        printf("Não é possível abrir o diretório.\n");
+        exit(1);
+    }
+
+    while ((info_user = readdir(directory)) != NULL)
+    {
+        if (strcmp(info_user->d_name, ".") != 0 && strcmp(info_user->d_name, "..") != 0)
+        {
+            float valor_em_conta = 0;
+            char path_user[] = "../data/";
+            strcat(path_user, info_user->d_name);
+            strcat(path_user, "/caixa.bin");
+
+            if ((archive = fopen(path_user, "rb")) == NULL)
+            {
+                printf("Erro no arquivo %s\n", strerror(errno));
+                exit(1);
+            }
+
+            if (fread(&valor_em_conta, sizeof(float), 1, archive) != 1)
+            {
+                printf("Erro na leitura do arquivo.\n");
+                fclose(archive);
+                continue;
+            }
+
+            if (valor_em_conta >= 0)
+            {
+                quantidade_clientes_sem_debito++;
+            }
+
+            fclose(archive);
+        }
+    }
+    
+    closedir(directory);
+
+    printf("A quantidade de clientes sem débito é de %d.\n", quantidade_clientes_sem_debito);
 }
 
 void valor_mais_baixo_em_conta(void)

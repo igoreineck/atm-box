@@ -23,14 +23,15 @@ int main(void) {
     int system_status = 1;    
     int option = 0;
 
-    while(system_status)
+    while (system_status)
     {
         show_main_header();
         printf("DIGITE UMA DAS OPÇÕES ABAIXO: \n");
         printf("-------------------------------------------------------\n");
         printf("Digite 1 - Para criar uma conta.\n");
         printf("Digite 2 - Para efetuar o login no sistema.\n");
-        printf("Digite 3 - Para Sair do sistema.\n");
+        printf("Digite 3 - Para acessar como Admin.\n");
+        printf("Digite 4 - Para Sair do sistema.\n");
         printf("-------------------------------------------------------\n");
         scanf("%d", &option);
 
@@ -45,6 +46,10 @@ int main(void) {
             login();
         }
         else if  (option == 3) 
+        {
+            login_admin();
+        }
+        else 
         {
            system_status = 0; 
         }

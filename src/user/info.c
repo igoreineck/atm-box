@@ -82,6 +82,7 @@ void informacoes_usuario(const char * path)
             printf("\ndigite qualquer tecla para voltar ao menu\n");
             getchar();
         }
+
         did_action = 1;
         int opcao = 0;
 
@@ -91,7 +92,6 @@ void informacoes_usuario(const char * path)
         printf("1 - Informações da Conta \n");
         printf("2 - Informações monetárias da Conta \n");
         printf("3 - Deslogar \n");
-        // printf("3 - Editar conta") -> Adicionar posteriormente
         scanf("%d", &opcao);
 
         __fpurge(stdin);
@@ -104,7 +104,7 @@ void informacoes_usuario(const char * path)
         {
             acessar_informacoes_monetarias(pathCopy);
         }
-        else if (opcao == 3)
+        else
         {
             status_user = 0;
         }
@@ -142,7 +142,6 @@ void acessar_informacoes_monetarias(const char * path)
     }
     else 
     {
-        // modificar_extrato_da_conta();
         acessar_extrato_da_conta(pathCopy);
     }
 }
@@ -156,7 +155,7 @@ char *exibir_data(void)
 
     if (current_time == ((time_t)-1))
     {
-        (void) fprintf(stderr, "Failure to obtain the current time.\n");
+        (void) fprintf(stderr, "Falha ao capturar a data e hora local.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -164,7 +163,7 @@ char *exibir_data(void)
 
     if (c_time_string == NULL)
     {
-        (void) fprintf(stderr, "Failure to convert the current time.\n");
+        (void) fprintf(stderr, "Falha em converter a data e hora atual.\n");
         exit(EXIT_FAILURE);
     }
 
