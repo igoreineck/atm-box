@@ -96,6 +96,11 @@ int login(void)
         memset(root_path_bckp, 0, sizeof root_path_bckp);
 
         fclose(file);
+        
+        if(status)
+        {
+            break;
+        }
     }
 
     if(!status)
